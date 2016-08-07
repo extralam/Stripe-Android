@@ -3,7 +3,7 @@
 Android Stripe UI
 - Implement A Stripe UI Helper
 
-# ScreenShot
+## ScreenShot
 <br>
 <img height="700" src="https://github.com/extralam/Stripe-Android/blob/master/screenshot/sample_screenshot.jpg?raw=true"/>
 <br>
@@ -11,7 +11,26 @@ Android Stripe UI
 <img width="800" src="https://github.com/extralam/Stripe-Android/blob/master/screenshot/screenshot_vide.gif?raw=true"/>
 <br>
 
-# Sample Code
+Add it in your root build.gradle at the end of repositories:
+
+
+##Gradle
+- Step 1. Add the JitPack repository to your build file
+- Add it in your root build.gradle at the end of repositories:
+```java
+allprojects {
+	repositories {
+		...
+		maven { url "https://jitpack.io" }
+	}
+}
+```
+- Step 2. Add the dependency
+```java
+compile 'compile 'com.github.extralam:Stripe-Android:1.0.0''
+```
+
+## Sample Code
 ```java
 String mDefaultPublishKey = "pk_test_your_code";
 StripePaymentDialog.show(
@@ -30,3 +49,7 @@ StripePaymentDialog.show(
             }
         });
 ```
+
+## About me
+
+An android developer in Hong Kong.
