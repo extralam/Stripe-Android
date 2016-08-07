@@ -39,7 +39,7 @@ public class StripePaymentActivity extends StripeBaseActivity {
                 "Your Shop Name Limited",
                 "$100 Movie Ticket",
                 "hkd",
-                100,
+                1000,
                 new StripePaymentDialog.OnStripePaymentDismissListener() {
                     @Override
                     public void onSuccess(Dialog mmDialog, Token mmToken) {

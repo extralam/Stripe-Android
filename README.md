@@ -11,9 +11,6 @@ Android Stripe UI
 <img width="800" src="https://github.com/extralam/Stripe-Android/blob/master/screenshot/screenshot_vide.gif?raw=true"/>
 <br>
 
-Add it in your root build.gradle at the end of repositories:
-
-
 ##Gradle
 - Step 1. Add the JitPack repository to your build file
 - Add it in your root build.gradle at the end of repositories:
@@ -27,7 +24,7 @@ allprojects {
 ```
 - Step 2. Add the dependency
 ```java
-compile 'compile 'com.github.extralam:Stripe-Android:1.0.0''
+compile 'com.github.extralam:Stripe-Android:1.0.2'
 ```
 
 ## Sample Code
