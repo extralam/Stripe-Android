@@ -30,7 +30,7 @@ public class StripePaymentActivity extends StripeBaseActivity {
     }
 
     private void stripeTest(){
-        String mDefaultPublishKey = "pk_test_vUL7zg212QFJbI4do3z62JAe";
+        String mDefaultPublishKey = "pk_test_your_code";
         StripePaymentDialog.show(
                 getSupportFragmentManager(),
                 mDefaultPublishKey,
