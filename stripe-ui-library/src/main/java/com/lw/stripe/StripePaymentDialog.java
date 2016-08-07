@@ -68,7 +68,7 @@ public class StripePaymentDialog extends DialogFragment {
      * @param _shop_name            - Stripe Shop Name
      * @param _description          - Description of your payment (e.g $100 Movie Coupon)
      * @param _currency             - Currency of your payment (e.g HKD)
-     * @param _amount               - Amount of your payment
+     * @param _amount               - Amount of your payment (e.g 100 then amount is 10000)
      * @param _OnDismissListener    - Callback Listener
      */
     public static void show(FragmentManager fm ,
@@ -185,7 +185,7 @@ public class StripePaymentDialog extends DialogFragment {
         mShopImageView.setUrl(mShopImage);
         mTitleTextView.setText(mShopName);
         mDescriptionTextView.setText(mDescription);
-        mStripe_dialog_paybutton.setText("PAY " + mCurrency + " " + mAmount);
+        mStripe_dialog_paybutton.setText(getString(R.string.__stripe_pay) + " " + mCurrency + " " + (mAmount / 100));
         mStripe_dialog_paybutton.setOnClickListener(mPayClickListener);
         if(mEmail != null && mEmail.length() > 0){
             mEmailTextView.setText(mEmail);

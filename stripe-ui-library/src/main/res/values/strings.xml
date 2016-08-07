@@ -3,4 +3,5 @@
     <string name="__stripe_invalidate_expirydate">The expiration date that you entered is invalid</string>
     <string name="__stripe_invalidate_cvc">The CVC code that you entered is invalid</string>
     <string name="__stripe_invalidate_card_detail">The card details that you entered are invalid</string>
+    <string name="__stripe_pay">PAY</string>
 </resources>
