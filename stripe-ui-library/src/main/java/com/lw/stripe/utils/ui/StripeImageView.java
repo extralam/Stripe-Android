@@ -19,6 +19,9 @@ import java.net.URL;
  */
 public class StripeImageView extends ImageView {
 
+    private DownloadImageTask task;
+    private BitmapCacheManager mBitmapCacheManager;
+
     public StripeImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
@@ -31,14 +34,11 @@ public class StripeImageView extends ImageView {
         super(context);
     }
 
-    private DownloadImageTask task;
-    private BitmapCacheManager mBitmapCacheManager;
-
     public void setUrl(String url) {
-        if(mBitmapCacheManager == null){
+        if (mBitmapCacheManager == null) {
             mBitmapCacheManager = new BitmapCacheManager();
         }
-        if(isUrl(url)) {
+        if (isUrl(url)) {
             synchronized (this) {
                 if (task != null)
                     task.cancel(true);
@@ -49,14 +49,14 @@ public class StripeImageView extends ImageView {
         }
     }
 
-    private boolean isUrl(String url){
+    private boolean isUrl(String url) {
         return (url.startsWith("http") || url.startsWith("https"));
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
         private static final String LOG_E_TAG = "DownloadImageTask";
-        private final  WeakReference<ImageView> containerImageView;
+        private final WeakReference<ImageView> containerImageView;
 
         public DownloadImageTask(ImageView imageView) {
             this.containerImageView = new WeakReference<ImageView>(imageView);
@@ -66,12 +66,12 @@ public class StripeImageView extends ImageView {
         protected Bitmap doInBackground(String... params) {
             String mmURL = params[0];
             Bitmap _output = mBitmapCacheManager.getBitmapFromMemCache(mmURL);
-            if(_output == null) {
+            if (_output == null) {
                 try {
                     URL imageURL = new URL(mmURL);
                     InputStream inputStream = imageURL.openStream();
                     _output = BitmapFactory.decodeStream(inputStream);
-                    mBitmapCacheManager.addBitmapToMemoryCache(mmURL , _output);
+                    mBitmapCacheManager.addBitmapToMemoryCache(mmURL, _output);
                 } catch (Exception e) {
                     Log.e(LOG_E_TAG, e.getMessage());
                     e.printStackTrace();

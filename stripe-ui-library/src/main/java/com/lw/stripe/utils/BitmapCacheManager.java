@@ -10,7 +10,7 @@ public class BitmapCacheManager {
 
     private LruCache<String, Bitmap> mMemoryCache;
 
-    public BitmapCacheManager(){
+    public BitmapCacheManager() {
         // Get max available VM memory, exceeding this amount will throw an
         // OutOfMemory exception. Stored in kilobytes as LruCache takes an
         // int in its constructor.

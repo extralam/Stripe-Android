@@ -37,6 +37,7 @@ public class CircleImageView extends StripeImageView {
     private Bitmap image;
     private Paint paint;
     private Paint paintBorder;
+    private boolean isBackground = false;
 
     public CircleImageView(Context context) {
         super(context, null);
@@ -61,14 +62,12 @@ public class CircleImageView extends StripeImageView {
         super(context, attrs, defStyle);
     }
 
-    public void setBorderWidth(int borderWidth)
-    {
+    public void setBorderWidth(int borderWidth) {
         this.borderWidth = borderWidth;
         this.invalidate();
     }
 
-    public void setBorderColor(int borderColor)
-    {
+    public void setBorderColor(int borderColor) {
         if (paintBorder != null)
             paintBorder.setColor(borderColor);
 
@@ -106,9 +105,7 @@ public class CircleImageView extends StripeImageView {
 //        canvas.drawCircle(circleCenter, circleCenter, circleCenter - 1, paint);
     }
 
-    private boolean isBackground = false;
-
-    public void setWithBackground(boolean isBackground){
+    public void setWithBackground(boolean isBackground) {
         this.isBackground = isBackground;
     }
 
@@ -116,13 +113,13 @@ public class CircleImageView extends StripeImageView {
         if (srcBmp.getWidth() == srcBmp.getHeight()) return srcBmp;
 
         //Rectangle to square. Equivarent to ScaleType.CENTER_CROP
-        int dim = Math.min(srcBmp.getWidth(), srcBmp.getHeight()) * 100  / 100;
+        int dim = Math.min(srcBmp.getWidth(), srcBmp.getHeight()) * 100 / 100;
         Bitmap dstBmp = Bitmap.createBitmap(dim, dim, BITMAP_CONFIG);
 
         Canvas canvas = new Canvas(dstBmp);
         float left = srcBmp.getWidth() > dim ? (dim - srcBmp.getWidth()) / 2 : 0;
         float top = srcBmp.getHeight() > dim ? ((dim - srcBmp.getHeight()) / 2) : 0;
-        if(this.isBackground) {
+        if (this.isBackground) {
             canvas.drawColor(Color.WHITE);
         }
         canvas.drawBitmap(srcBmp, left, top, null);

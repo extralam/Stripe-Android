@@ -26,7 +26,7 @@ public class JsonHelper {
             return json;
         } else if (object instanceof Iterable) {
             JSONArray json = new JSONArray();
-            for (Object value : ((Iterable)object)) {
+            for (Object value : ((Iterable) object)) {
                 json.put(value);
             }
             return json;

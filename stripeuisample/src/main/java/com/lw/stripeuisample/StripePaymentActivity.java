@@ -20,7 +20,7 @@ public class StripePaymentActivity extends StripeBaseActivity {
 
     }
 
-    public void onClick(View v){
+    public void onClick(View v) {
         stripeTest();
     }
 
@@ -29,8 +29,8 @@ public class StripePaymentActivity extends StripeBaseActivity {
         stripeTest();
     }
 
-    private void stripeTest(){
-        String mDefaultPublishKey = "pk_test_your_code";
+    private void stripeTest() {
+        String mDefaultPublishKey = "pk_test_7djDh48O7jQH8ZIbaVr12IER";
         StripePaymentDialog.show(
                 getSupportFragmentManager(),
                 mDefaultPublishKey,
@@ -43,7 +43,7 @@ public class StripePaymentActivity extends StripeBaseActivity {
                 new StripePaymentDialog.OnStripePaymentDismissListener() {
                     @Override
                     public void onSuccess(Dialog mmDialog, Token mmToken) {
-                        Log.d("atest","id : " + mmToken.getId());
+                        Log.d("atest", "id : " + mmToken.getId());
                     }
                 });
     }

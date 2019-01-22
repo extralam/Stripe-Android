@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="320dp"
@@ -23,23 +22,23 @@
 
 
             <LinearLayout
-                android:animateLayoutChanges="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
                 android:background="@drawable/stripe_dialog_background_top"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingBottom="0dp"
-                android:paddingTop="0dp">
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp">
 
 
                 <com.lw.stripe.utils.ui.StripeImageView
                     android:id="@+id/stripe_dialog_exit"
-                    android:layout_gravity="left"
-                    android:src="@drawable/ic_exit"
-                    android:adjustViewBounds="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_exit"/>
 
 
                 <TextView
@@ -50,65 +49,64 @@
                     android:text=""
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/stripe_dialog_txt2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:padding="2dp"
                     android:text=""
-                    android:layout_marginBottom="4dp"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
 
                 <TextView
-                    android:visibility="gone"
                     android:id="@+id/stripe_dialog_error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:padding="2dp"
                     android:text=""
-                    android:layout_marginBottom="4dp"
                     android:textColor="@android:color/holo_red_light"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:visibility="gone"/>
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/stripe_dialog_email_container"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <View
-                        android:layout_marginRight="1dp"
-                        android:layout_marginLeft="1dp"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#CCCCCC" />
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="1dp"
+                        android:background="#CCCCCC"/>
 
                     <TextView
                         android:id="@+id/stripe_dialog_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="2dp"
                         android:gravity="center"
+                        android:padding="2dp"
                         android:text=""
                         android:textColor="@android:color/black"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"/>
 
                 </LinearLayout>
 
             </LinearLayout>
 
 
-
             <View
-                android:layout_marginRight="1dp"
-                android:layout_marginLeft="1dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#CCCCCC" />
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="#CCCCCC"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -126,9 +124,9 @@
 
                     <LinearLayout
                         android:id="@+id/stripe_dialog_card_container"
-                        android:animateLayoutChanges="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -136,43 +134,43 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
-                            android:src="@drawable/ic__stripe_card" />
+                            android:src="@drawable/ic__stripe_card"/>
 
                         <EditText
                             android:id="@+id/stripe_dialog_card"
-                            android:background="@null"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="2dp"
                             android:layout_weight="1"
+                            android:background="@null"
                             android:digits="0123456789"
+                            android:hint="Card number"
                             android:inputType="number"
                             android:maxLength="19"
-                            android:hint="Card number"
+                            android:padding="2dp"
                             android:textColor="@android:color/black"
                             android:textColorHint="@android:color/darker_gray"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"/>
 
                         <ImageView
                             android:id="@+id/stripe_dialog_card_icon"
-                            android:visibility="gone"
-                            android:layout_marginRight="4dp"
-                            android:src="@drawable/ic__visa"
-                            android:adjustViewBounds="true"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="4dp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic__visa"
+                            android:visibility="gone"/>
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#CCCCCC" />
+                        android:background="#CCCCCC"/>
 
                     <LinearLayout
 
-                        android:gravity="center_vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -187,28 +185,28 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:adjustViewBounds="true"
-                                android:src="@drawable/ic_stripe_date" />
+                                android:src="@drawable/ic_stripe_date"/>
 
                             <EditText
                                 android:id="@+id/stripe_dialog_date"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:padding="2dp"
                                 android:background="@null"
                                 android:hint="MM / YY"
+                                android:inputType="number"
                                 android:lines="1"
                                 android:maxLength="5"
-                                android:inputType="number"
+                                android:padding="2dp"
                                 android:textColor="@android:color/black"
                                 android:textColorHint="@android:color/darker_gray"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"/>
 
                         </LinearLayout>
 
                         <View
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:background="#CCCCCC" />
+                            android:background="#CCCCCC"/>
 
                         <LinearLayout
                             android:id="@+id/stripe_dialog_cvc_container"
@@ -222,20 +220,20 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:adjustViewBounds="true"
-                                android:src="@drawable/ic_stripe_cvc" />
+                                android:src="@drawable/ic_stripe_cvc"/>
 
                             <EditText
                                 android:id="@+id/stripe_dialog_cvc"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:padding="2dp"
-                                android:hint="CVC"
-                                android:maxLength="6"
                                 android:background="@null"
+                                android:hint="CVC"
                                 android:inputType="number"
+                                android:maxLength="6"
+                                android:padding="2dp"
                                 android:textColor="@android:color/black"
                                 android:textColorHint="@android:color/darker_gray"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"/>
 
                         </LinearLayout>
                     </LinearLayout>
@@ -249,8 +247,8 @@
                     android:background="@drawable/stripe_btn_background"
                     android:padding="8dp"
                     android:text="Pay $19.99"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 
@@ -260,15 +258,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="2dp">
 
             <com.lw.stripe.utils.ui.CircleImageView
-                android:layout_centerInParent="true"
                 android:id="@+id/stripe__logo"
                 android:layout_width="68dp"
                 android:layout_height="68dp"
-                android:adjustViewBounds="true" />
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"/>
 
         </RelativeLayout>
 

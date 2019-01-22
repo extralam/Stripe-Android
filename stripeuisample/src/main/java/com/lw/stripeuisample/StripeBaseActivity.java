@@ -6,13 +6,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 /**
- *
  * Created by alan Lam on 31/7/16.
  */
 public abstract class StripeBaseActivity extends AppCompatActivity {
 
     public abstract int getLayout();
+
     public abstract void initView(Bundle savedInstanceState);
+
     public abstract void init(Bundle savedInstanceState);
 
     @Override
