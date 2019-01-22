@@ -24,7 +24,6 @@ import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
-import com.stripe.exception.AuthenticationException;
 
 import java.lang.reflect.Field;
 import java.text.ParseException;
@@ -176,11 +175,7 @@ public class StripePaymentDialog extends DialogFragment {
         super.onActivityCreated(savedInstanceState);
         setupDialog();
 
-        try {
-            mStripe = new Stripe(mDefaultPublishKey);
-        }catch (AuthenticationException e){
-
-        }
+        mStripe = new Stripe(getContext(), mDefaultPublishKey);
 
         mShopImageView.setUrl(mShopImage);
         mTitleTextView.setText(mShopName);
