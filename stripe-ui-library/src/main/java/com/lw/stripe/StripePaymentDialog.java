@@ -1,7 +1,9 @@
 package com.lw.stripe;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -35,6 +37,7 @@ import java.util.Locale;
  * Stripe Payment Dialog
  * - Easy Start a StripePayment
  */
+@SuppressLint("SetTextI18n")
 public class StripePaymentDialog extends DialogFragment {
 
     private static final String TAG = "StripePaymentDialog";
@@ -65,13 +68,13 @@ public class StripePaymentDialog extends DialogFragment {
     private Button mStripe_dialog_paybutton;
     private StripeImageView mExitButton;
     // VARIABLE
-    private String mLastInput;
-    private String mDefaultPublishKey = null;
-    private String mShopName = null;
-    private String mShopImage = null;
-    private String mDescription = null;
-    private String mCurrency = null;
-    private String mEmail = null;
+    private String mLastInput = "";
+    private String mDefaultPublishKey = "";
+    private String mShopName = "";
+    private String mShopImage = "";
+    private String mDescription = "";
+    private String mCurrency = "";
+    private String mEmail = "";
     private float mAmount;
     /**
      * Credit Card Edittext Change Listener
@@ -119,11 +122,9 @@ public class StripePaymentDialog extends DialogFragment {
                         mExpiryDate.setText("0" + mExpiryDate.getText().toString() + "/");
                         mExpiryDate.setSelection(mExpiryDate.getText().toString().length());
                     }
-                } else {
-
                 }
+
                 mLastInput = mExpiryDate.getText().toString();
-                return;
             }
         }
     };
@@ -246,7 +247,8 @@ public class StripePaymentDialog extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        @SuppressLint("InflateParams")
         View v = inflater.inflate(R.layout.stripe__dialog_, null, false);
         mStripe_dialog_card_container = v.findViewById(R.id.stripe_dialog_card_container);
         mStripe_dialog_date_container = v.findViewById(R.id.stripe_dialog_date_container);
@@ -377,13 +379,15 @@ public class StripePaymentDialog extends DialogFragment {
     }
 
     private void setupDialog() {
-        // special the dialog fragment, make it full screen
-        setCancelable(false);
+        if (getDialog().getWindow() != null) {
+            // special the dialog fragment, make it full screen
+            setCancelable(false);
 //        getDialog().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        getDialog().getWindow().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-        getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        getDialog().getWindow().setWindowAnimations(android.R.style.Animation_Dialog);
+            getDialog().getWindow().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+            getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            getDialog().getWindow().setWindowAnimations(android.R.style.Animation_Dialog);
+        }
     }
 
     /**
@@ -396,5 +400,4 @@ public class StripePaymentDialog extends DialogFragment {
          */
         void onSuccess(Dialog mmDialog, Token mmToken);
     }
-
 }
