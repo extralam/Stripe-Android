@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -20,7 +21,6 @@
             android:background="@drawable/stripe_dialog_background"
             android:orientation="vertical">
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -31,15 +31,13 @@
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp">
 
-
-                <com.lw.stripe.utils.ui.StripeImageView
+                <ImageView
                     android:id="@+id/stripe_dialog_exit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:adjustViewBounds="true"
                     android:src="@drawable/ic_exit"/>
-
 
                 <TextView
                     android:id="@+id/stripe_dialog_txt1"
@@ -95,11 +93,8 @@
                         android:text=""
                         android:textColor="@android:color/black"
                         android:textSize="12sp"/>
-
                 </LinearLayout>
-
             </LinearLayout>
-
 
             <View
                 android:layout_width="match_parent"
@@ -130,7 +125,7 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.lw.stripe.utils.ui.StripeImageView
+                        <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
@@ -167,7 +162,6 @@
                         android:background="#CCCCCC"/>
 
                     <LinearLayout
-
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -181,7 +175,7 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
-                            <com.lw.stripe.utils.ui.StripeImageView
+                            <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:adjustViewBounds="true"
@@ -199,8 +193,8 @@
                                 android:padding="2dp"
                                 android:textColor="@android:color/black"
                                 android:textColorHint="@android:color/darker_gray"
-                                android:textSize="14sp"/>
-
+                                android:textSize="14sp"
+                                tools:ignore="TextFields"/>
                         </LinearLayout>
 
                         <View
@@ -216,7 +210,7 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
-                            <com.lw.stripe.utils.ui.StripeImageView
+                            <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:adjustViewBounds="true"
@@ -234,7 +228,6 @@
                                 android:textColor="@android:color/black"
                                 android:textColorHint="@android:color/darker_gray"
                                 android:textSize="14sp"/>
-
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -249,10 +242,7 @@
                     android:text="Pay $19.99"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"/>
-
             </LinearLayout>
-
-
         </LinearLayout>
 
         <RelativeLayout
@@ -267,10 +257,6 @@
                 android:layout_height="68dp"
                 android:layout_centerInParent="true"
                 android:adjustViewBounds="true"/>
-
         </RelativeLayout>
-
-
     </FrameLayout>
-
 </RelativeLayout>

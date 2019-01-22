@@ -21,7 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lw.stripe.utils.ui.CircleImageView;
-import com.lw.stripe.utils.ui.StripeImageView;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
@@ -66,7 +65,7 @@ public class StripePaymentDialog extends DialogFragment {
     private TextView mEmailTextView;
     private CircleImageView mShopImageView;
     private Button mStripe_dialog_paybutton;
-    private StripeImageView mExitButton;
+    private ImageView mExitButton;
     // VARIABLE
     private String mLastInput = "";
     private String mDefaultPublishKey = "";
