@@ -233,7 +233,7 @@ public class StripePaymentDialog extends DialogFragment {
             public void afterTextChanged(Editable s) {
                 if(mCreditCard.getText().length() > 0) {
                     Card mmCard = new Card(mCreditCard.getText().toString(), 0, 0, "");
-                    switch (mmCard.getType()) {
+                    switch (mmCard.getBrand()) {
                         case Card.VISA:
                             mStripeDialogCardIcon.setImageResource(R.drawable.ic__visa);
                             mStripeDialogCardIcon.setVisibility(View.VISIBLE);
