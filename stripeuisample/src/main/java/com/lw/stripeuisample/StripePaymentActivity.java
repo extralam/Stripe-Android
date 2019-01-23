@@ -30,12 +30,12 @@ public class StripePaymentActivity extends StripeBaseActivity {
     }
 
     private void stripeTest() {
-        String mDefaultPublishKey = "pk_test_your_code";
+        String mDefaultPublishKey = "pk_test_7djDh48O7jQH8ZIbaVr12IER";
         StripePaymentDialog.show(
                 getSupportFragmentManager(),
                 mDefaultPublishKey,
                 "test@test.com",
-                "https://stripe.com/img/about/logos/logos/black.png",
+                "https://lh3.googleusercontent.com/2cFffV6MnvwU4IfHeNSIRAPPydBqcfW50AS6wE6EopFPfXsbKSvCxGwjXxct5XIUC7Q=s512-rw",
                 "Your Shop Name Limited",
                 "$100 Movie Ticket",
                 "hkd",
