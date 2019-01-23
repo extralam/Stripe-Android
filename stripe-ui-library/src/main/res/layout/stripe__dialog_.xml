@@ -129,7 +129,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
-                            android:src="@drawable/ic__stripe_card"/>
+                            android:src="@drawable/ic_stripe_card"/>
 
                         <EditText
                             android:id="@+id/stripe_dialog_card"
@@ -152,7 +152,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="4dp"
                             android:adjustViewBounds="true"
-                            android:src="@drawable/ic__visa"
+                            android:src="@drawable/ic_visa"
                             android:visibility="gone"/>
                     </LinearLayout>
 
