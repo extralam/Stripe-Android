@@ -26,6 +26,7 @@ import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
+import com.stripe.android.view.CardNumberEditText;
 
 import java.lang.reflect.Field;
 import java.text.ParseException;
@@ -56,7 +57,7 @@ public class StripePaymentDialog extends DialogFragment {
     private LinearLayout mStripeDialogDateContainer;
     private LinearLayout mStripeDialogCvcContainer;
     private LinearLayout mStripeDialogEmailContainer;
-    private EditText mCreditCard;
+    private CardNumberEditText mCreditCard;
     private EditText mExpiryDate;
     private EditText mCVC;
     private ImageView mStripeDialogCardIcon;
@@ -377,6 +378,8 @@ public class StripePaymentDialog extends DialogFragment {
                 }
             }
         });
+        //Setting error color required or else text color is transparent. Setting in XML does not work.
+        mCreditCard.setErrorColor(ContextCompat.getColor(getContext(), android.R.color.holo_red_light));
 
         mExitButton.setOnClickListener(new View.OnClickListener() {
             @Override
