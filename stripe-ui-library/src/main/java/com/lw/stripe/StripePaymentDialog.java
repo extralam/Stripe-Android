@@ -51,10 +51,10 @@ public class StripePaymentDialog extends DialogFragment {
     private OnStripePaymentDismissListener onDismissListener;
     private Stripe mStripe;
     // UI
-    private LinearLayout mStripe_dialog_card_container;
-    private LinearLayout mStripe_dialog_date_container;
-    private LinearLayout mStripe_dialog_cvc_container;
-    private LinearLayout mStripe_dialog_email_container;
+    private LinearLayout mStripeDialogCardContainer;
+    private LinearLayout mStripeDialogDateContainer;
+    private LinearLayout mStripeDialogCvcContainer;
+    private LinearLayout mStripeDialogEmailContainer;
     private EditText mCreditCard;
     private EditText mExpiryDate;
     private EditText mCVC;
@@ -64,7 +64,7 @@ public class StripePaymentDialog extends DialogFragment {
     private TextView mErrorMessage;
     private TextView mEmailTextView;
     private CircleImageView mShopImageView;
-    private Button mStripe_dialog_paybutton;
+    private Button mStripeDialogPayButton;
     private ImageView mExitButton;
     // VARIABLE
     private String mLastInput = "";
@@ -214,7 +214,7 @@ public class StripePaymentDialog extends DialogFragment {
             myDialogFragment.dismiss();
         }
         StripePaymentDialog instance = new StripePaymentDialog();
-        instance.setDissmissListener(_OnDismissListener);
+        instance.setDismissListener(_OnDismissListener);
         Bundle args = new Bundle();
         args.putString(EXTRA_DEFAULT_PUBLISH_KEY, publish_key);
         args.putString(EXTRA_USER_EMAIL, _email);
@@ -227,7 +227,7 @@ public class StripePaymentDialog extends DialogFragment {
         instance.show(fm, TAG);
     }
 
-    public void setDissmissListener(OnStripePaymentDismissListener dissmissListener) {
+    public void setDismissListener(OnStripePaymentDismissListener dissmissListener) {
         this.onDismissListener = dissmissListener;
     }
 
@@ -249,10 +249,10 @@ public class StripePaymentDialog extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         @SuppressLint("InflateParams")
         View v = inflater.inflate(R.layout.stripe__dialog_, null, false);
-        mStripe_dialog_card_container = v.findViewById(R.id.stripe_dialog_card_container);
-        mStripe_dialog_date_container = v.findViewById(R.id.stripe_dialog_date_container);
-        mStripe_dialog_cvc_container = v.findViewById(R.id.stripe_dialog_cvc_container);
-        mStripe_dialog_email_container = v.findViewById(R.id.stripe_dialog_email_container);
+        mStripeDialogCardContainer = v.findViewById(R.id.stripe_dialog_card_container);
+        mStripeDialogDateContainer = v.findViewById(R.id.stripe_dialog_date_container);
+        mStripeDialogCvcContainer = v.findViewById(R.id.stripe_dialog_cvc_container);
+        mStripeDialogEmailContainer = v.findViewById(R.id.stripe_dialog_email_container);
         mExitButton = v.findViewById(R.id.stripe_dialog_exit);
         mTitleTextView = v.findViewById(R.id.stripe_dialog_txt1);
         mDescriptionTextView = v.findViewById(R.id.stripe_dialog_txt2);
@@ -263,7 +263,7 @@ public class StripePaymentDialog extends DialogFragment {
         mExpiryDate = v.findViewById(R.id.stripe_dialog_date);
         mCreditCard = v.findViewById(R.id.stripe_dialog_card);
         mCVC = v.findViewById(R.id.stripe_dialog_cvc);
-        mStripe_dialog_paybutton = v.findViewById(R.id.stripe_dialog_paybutton);
+        mStripeDialogPayButton = v.findViewById(R.id.stripe_dialog_paybutton);
         mStripeDialogCardIcon = v.findViewById(R.id.stripe_dialog_card_icon);
         return v;
     }
@@ -279,11 +279,11 @@ public class StripePaymentDialog extends DialogFragment {
         mShopImageView.setUrl(mShopImage);
         mTitleTextView.setText(mShopName);
         mDescriptionTextView.setText(mDescription);
-        mStripe_dialog_paybutton.setText(getString(R.string.__stripe_pay) + " " + mCurrency + " " + (mAmount / 100));
-        mStripe_dialog_paybutton.setOnClickListener(mPayClickListener);
+        mStripeDialogPayButton.setText(getString(R.string.__stripe_pay) + " " + mCurrency + " " + (mAmount / 100));
+        mStripeDialogPayButton.setOnClickListener(mPayClickListener);
         if (mEmail != null && mEmail.length() > 0) {
             mEmailTextView.setText(mEmail);
-            mStripe_dialog_email_container.setVisibility(View.VISIBLE);
+            mStripeDialogEmailContainer.setVisibility(View.VISIBLE);
         }
 
         mExpiryDate.addTextChangedListener(mCreditCardExpireDateTextWatcher);
@@ -291,9 +291,9 @@ public class StripePaymentDialog extends DialogFragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    mStripe_dialog_card_container.setBackgroundResource(R.drawable.stripe_inputbox_background_selected_top);
+                    mStripeDialogCardContainer.setBackgroundResource(R.drawable.stripe_inputbox_background_selected_top);
                 } else {
-                    mStripe_dialog_card_container.setBackgroundResource(android.R.color.transparent);
+                    mStripeDialogCardContainer.setBackgroundResource(android.R.color.transparent);
                 }
             }
         });
@@ -301,9 +301,9 @@ public class StripePaymentDialog extends DialogFragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    mStripe_dialog_date_container.setBackgroundResource(R.drawable.stripe_inputbox_background_selected_left_bottom);
+                    mStripeDialogDateContainer.setBackgroundResource(R.drawable.stripe_inputbox_background_selected_left_bottom);
                 } else {
-                    mStripe_dialog_date_container.setBackgroundResource(android.R.color.transparent);
+                    mStripeDialogDateContainer.setBackgroundResource(android.R.color.transparent);
                 }
             }
         });
@@ -311,9 +311,9 @@ public class StripePaymentDialog extends DialogFragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    mStripe_dialog_cvc_container.setBackgroundResource(R.drawable.stripe_inputbox_background_selected_right_bottom);
+                    mStripeDialogCvcContainer.setBackgroundResource(R.drawable.stripe_inputbox_background_selected_right_bottom);
                 } else {
-                    mStripe_dialog_cvc_container.setBackgroundResource(android.R.color.transparent);
+                    mStripeDialogCvcContainer.setBackgroundResource(android.R.color.transparent);
                 }
             }
         });
