@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -334,19 +335,42 @@ public class StripePaymentDialog extends DialogFragment {
                     Card mmCard = new Card(mCreditCard.getText().toString(), 0, 0, "");
                     switch (mmCard.getBrand()) {
                         case Card.VISA:
-                            mStripeDialogCardIcon.setImageResource(R.drawable.ic__visa);
+                            mStripeDialogCardIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_visa));
                             mStripeDialogCardIcon.setVisibility(View.VISIBLE);
                             break;
                         case Card.MASTERCARD:
-                            mStripeDialogCardIcon.setImageResource(R.drawable.ic__mastercard);
+                            mStripeDialogCardIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_mastercard));
                             mStripeDialogCardIcon.setVisibility(View.VISIBLE);
                             break;
                         case Card.AMERICAN_EXPRESS:
-                            mStripeDialogCardIcon.setImageResource(R.drawable.ic__ae);
+                            mStripeDialogCardIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_amex));
+                            mStripeDialogCardIcon.setVisibility(View.VISIBLE);
+                            break;
+                        case Card.DISCOVER:
+                            mStripeDialogCardIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_discover));
+                            mStripeDialogCardIcon.setVisibility(View.VISIBLE);
+                            break;
+                        case Card.DINERS_CLUB:
+                            mStripeDialogCardIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_diners));
+                            mStripeDialogCardIcon.setVisibility(View.VISIBLE);
+                            break;
+                        case Card.JCB:
+                            mStripeDialogCardIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_jcb));
+                            mStripeDialogCardIcon.setVisibility(View.VISIBLE);
+                            break;
+                        case Card.UNIONPAY:
+                            mStripeDialogCardIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_unionpay_template_32));
                             mStripeDialogCardIcon.setVisibility(View.VISIBLE);
                             break;
                         default:
-                            mStripeDialogCardIcon.setVisibility(View.GONE);
+                            //Card type is detected after 4 numbers. Display Unknown type if no type detected after 4 digits entered.
+                            if (mCreditCard.getText().length() >= 4) {
+                                mStripeDialogCardIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_unknown));
+                                mStripeDialogCardIcon.setVisibility(View.VISIBLE);
+                            } else {
+                                mStripeDialogCardIcon.setVisibility(View.GONE);
+                            }
+                            break;
                     }
                 } else {
                     mStripeDialogCardIcon.setVisibility(View.GONE);
