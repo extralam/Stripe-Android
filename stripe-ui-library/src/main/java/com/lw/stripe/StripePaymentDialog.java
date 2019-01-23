@@ -376,6 +376,10 @@ public class StripePaymentDialog extends DialogFragment {
                 } else {
                     mStripeDialogCardIcon.setVisibility(View.GONE);
                 }
+
+                if (mCreditCard.getText().length() == 19 && mCreditCard.isCardNumberValid()) {
+                    mExpiryDate.requestFocus();
+                }
             }
         });
         //Setting error color required or else text color is transparent. Setting in XML does not work.
