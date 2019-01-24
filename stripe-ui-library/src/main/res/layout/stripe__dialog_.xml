@@ -160,6 +160,7 @@
                             android:id="@+id/stripe_dialog_card_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
                             android:layout_marginRight="4dp"
                             android:adjustViewBounds="true"
                             android:visibility="gone"/>
@@ -271,8 +272,7 @@
                     android:padding="8dp"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"/>
+                    android:focusable="true"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -287,7 +287,12 @@
                 android:layout_width="68dp"
                 android:layout_height="68dp"
                 android:layout_centerInParent="true"
-                android:adjustViewBounds="true"/>
+                android:layout_margin="4dp"
+                android:adjustViewBounds="true"
+                android:elevation="4dp"
+                android:clickable="true"
+                android:focusable="true"
+                tools:ignore="UnusedAttribute"/>
         </RelativeLayout>
     </FrameLayout>
 </RelativeLayout>
