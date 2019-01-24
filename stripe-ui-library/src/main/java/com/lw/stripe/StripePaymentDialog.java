@@ -202,7 +202,7 @@ public class StripePaymentDialog extends DialogFragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    mStripeDialogCardContainer.setBackgroundResource(R.drawable.stripe_inputbox_background_selected_top);
+                    mStripeDialogCardContainer.setBackgroundResource(R.drawable.stripe_inputbox_background_top_selected);
                 } else {
                     mStripeDialogCardContainer.setBackgroundResource(android.R.color.transparent);
                 }
@@ -212,7 +212,7 @@ public class StripePaymentDialog extends DialogFragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    mStripeDialogDateContainer.setBackgroundResource(R.drawable.stripe_inputbox_background_selected_left_bottom);
+                    mStripeDialogDateContainer.setBackgroundResource(R.drawable.stripe_inputbox_background_left_bottom_selected);
                 } else {
                     mStripeDialogDateContainer.setBackgroundResource(android.R.color.transparent);
                 }
@@ -222,7 +222,7 @@ public class StripePaymentDialog extends DialogFragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    mStripeDialogCvcContainer.setBackgroundResource(R.drawable.stripe_inputbox_background_selected_right_bottom);
+                    mStripeDialogCvcContainer.setBackgroundResource(R.drawable.stripe_inputbox_background_right_bottom_selected);
                 } else {
                     mStripeDialogCvcContainer.setBackgroundResource(android.R.color.transparent);
                 }
