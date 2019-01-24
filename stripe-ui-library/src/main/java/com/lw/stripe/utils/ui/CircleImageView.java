@@ -24,17 +24,21 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.lw.stripe.R;
+
+import androidx.core.content.res.ResourcesCompat;
 
 public class CircleImageView extends StripeImageView {
 
     private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
     private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
 
-    private int borderWidth = 4;
+    private int borderWidth = 0;
     private int canvasSize;
-    private Bitmap image;
     private Paint paint;
     private Paint paintBorder;
     private boolean isBackground = false;
@@ -52,10 +56,7 @@ public class CircleImageView extends StripeImageView {
         paintBorder = new Paint();
         paintBorder.setStyle(Paint.Style.FILL_AND_STROKE);
         paintBorder.setAntiAlias(true);
-        setBorderColor(Color.GRAY);
-        // Create Shadow
-        this.setLayerType(LAYER_TYPE_SOFTWARE, paintBorder);
-        paintBorder.setShadowLayer(4.0f, 0.0f, 2.0f, Color.BLACK);
+        paintBorder.setColor(getResources().getColor(android.R.color.transparent));
     }
 
     public CircleImageView(Context context, AttributeSet attrs, int defStyle) {
@@ -86,9 +87,9 @@ public class CircleImageView extends StripeImageView {
 
         Bitmap image = getSquareBitmap(srcBmp);
 
-        canvasSize = canvas.getWidth();
-        if (canvas.getWidth() < canvasSize)
-            canvasSize = canvas.getWidth();
+        canvasSize = getWidth();
+        if (getWidth() < canvasSize)
+            canvasSize = getWidth();
 
         BitmapShader shader = new BitmapShader(
                 Bitmap.createScaledBitmap(image, canvasSize, canvasSize, false),
@@ -96,17 +97,27 @@ public class CircleImageView extends StripeImageView {
                 Shader.TileMode.CLAMP);
         paint.setShader(shader);
 
-        int circleCenter = canvasSize / 2;
+        float circleCenter = canvasSize / 2f;
         // circleCenter is the x or y of the view's center
         // radius is the radius in pixels of the cirle to be drawn
         // paint contains the shader that will texture the shape
-        canvas.drawCircle(circleCenter + borderWidth, circleCenter + borderWidth, circleCenter - borderWidth / 2, paintBorder);
-        canvas.drawCircle(circleCenter + borderWidth, circleCenter + borderWidth, circleCenter - 1, paint);
-//        canvas.drawCircle(circleCenter, circleCenter, circleCenter - 1, paint);
+        canvas.drawCircle(circleCenter, circleCenter, circleCenter, paintBorder);
+        canvas.drawCircle(circleCenter, circleCenter, circleCenter - borderWidth / 2f, paint);
     }
 
-    public void setWithBackground(boolean isBackground) {
+    public void showBackground(boolean isBackground) {
         this.isBackground = isBackground;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            if (isBackground) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    setForeground(ResourcesCompat.getDrawable(getResources(), R.drawable.bg_circle_ripple, null));
+                }
+                setBackground(getResources().getDrawable(R.drawable.bg_circle_white));
+            }
+        } else {
+            if (isBackground)
+                setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_circle_white));
+        }
     }
 
     private Bitmap getSquareBitmap(Bitmap srcBmp) {
@@ -117,8 +128,8 @@ public class CircleImageView extends StripeImageView {
         Bitmap dstBmp = Bitmap.createBitmap(dim, dim, BITMAP_CONFIG);
 
         Canvas canvas = new Canvas(dstBmp);
-        float left = srcBmp.getWidth() > dim ? (dim - srcBmp.getWidth()) / 2 : 0;
-        float top = srcBmp.getHeight() > dim ? ((dim - srcBmp.getHeight()) / 2) : 0;
+        float left = srcBmp.getWidth() > dim ? (dim - srcBmp.getWidth()) / 2f : 0;
+        float top = srcBmp.getHeight() > dim ? ((dim - srcBmp.getHeight()) / 2f) : 0;
         if (this.isBackground) {
             canvas.drawColor(Color.WHITE);
         }
@@ -135,7 +146,7 @@ public class CircleImageView extends StripeImageView {
     }
 
     private int measureWidth(int measureSpec) {
-        int result = 0;
+        int result;
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
 
@@ -154,7 +165,7 @@ public class CircleImageView extends StripeImageView {
     }
 
     private int measureHeight(int measureSpecHeight) {
-        int result = 0;
+        int result;
         int specMode = MeasureSpec.getMode(measureSpecHeight);
         int specSize = MeasureSpec.getSize(measureSpecHeight);
 
@@ -169,6 +180,6 @@ public class CircleImageView extends StripeImageView {
             result = canvasSize;
         }
 
-        return (result + 2);
+        return result;
     }
 }

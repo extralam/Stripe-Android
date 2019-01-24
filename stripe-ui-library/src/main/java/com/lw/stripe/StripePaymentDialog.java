@@ -170,7 +170,7 @@ public class StripePaymentDialog extends DialogFragment {
         mEmailTextView = v.findViewById(R.id.stripe_dialog_email);
         mErrorMessage = v.findViewById(R.id.stripe_dialog_error);
         mShopImageView = v.findViewById(R.id.stripe__logo);
-        mShopImageView.setWithBackground(true);
+        mShopImageView.showBackground(true);
         mExpiryDate = v.findViewById(R.id.stripe_dialog_date);
         mCreditCard = v.findViewById(R.id.stripe_dialog_card);
         mCVC = v.findViewById(R.id.stripe_dialog_cvc);
