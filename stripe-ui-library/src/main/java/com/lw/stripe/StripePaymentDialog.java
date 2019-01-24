@@ -163,7 +163,7 @@ public class StripePaymentDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         @SuppressLint("InflateParams")
-        View v = inflater.inflate(R.layout.stripe__dialog_, null, false);
+        View v = inflater.inflate(R.layout.stripe_dialog, null, false);
         mStripeDialogCardContainer = v.findViewById(R.id.stripe_dialog_card_container);
         mStripeDialogDateContainer = v.findViewById(R.id.stripe_dialog_date_container);
         mStripeDialogCvcContainer = v.findViewById(R.id.stripe_dialog_cvc_container);
