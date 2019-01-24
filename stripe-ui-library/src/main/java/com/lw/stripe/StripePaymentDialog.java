@@ -9,7 +9,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -89,6 +88,7 @@ public class StripePaymentDialog extends DialogFragment {
     private View.OnClickListener mPayClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Log.d("Button", "Clicked");
             if (validateCard()) {
                 createStripeToken();
             }
@@ -350,29 +350,22 @@ public class StripePaymentDialog extends DialogFragment {
 
     private boolean validateCard() {
         mErrorMessage.setVisibility(View.GONE);
-        if (mCreditCard.getText().toString().length() <= 0) {
-            mCreditCard.setError(getString(R.string.__stripe_invalidate_card_number));
-            return false;
-        }
-        if (mCVC.getText().toString().length() <= 0) {
-            mCVC.setError(getString(R.string.__stripe_invalidate_cvc));
-            return false;
-        }
-        if (mExpiryDate.getText().toString().length() <= 0) {
-            mExpiryDate.setError(getString(R.string.__stripe_invalidate_expirydate));
-            return false;
-        }
+        mCreditCard.setError(null);
+        mExpiryDate.setError(null);
+        mCVC.setError(null);
 
-        int[] mmMMYY = mExpiryDate.getValidDateFields();
-        if (mmMMYY == null) {
-            mExpiryDate.setError(getString(R.string.__stripe_invalidate_expirydate));
-            return false;
+        //Get expiry date fields or set invalid fields if null.
+        int[] MMYY = mExpiryDate.getValidDateFields();
+        if (MMYY == null) {
+            MMYY = new int[2];
+            MMYY[0] = -1;
+            MMYY[1] = -1;
         }
 
         mCard = new Card(
                 mCreditCard.getText().toString(),
-                mmMMYY[0],
-                mmMMYY[1],
+                MMYY[0],
+                MMYY[1],
                 mCVC.getText().toString());
         if (mCard.validateCard()) {
             return true;
