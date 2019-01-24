@@ -276,6 +276,8 @@
                     android:padding="8dp"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"
+                    android:singleLine="true"
+                    android:ellipsize="middle"
                     android:focusable="true"/>
             </LinearLayout>
         </LinearLayout>
