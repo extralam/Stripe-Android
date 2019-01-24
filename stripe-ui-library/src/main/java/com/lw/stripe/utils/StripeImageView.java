@@ -8,8 +8,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.lw.stripe.utils.BitmapCacheManager;
-
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.net.URL;
