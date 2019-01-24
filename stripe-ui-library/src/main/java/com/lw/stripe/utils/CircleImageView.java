@@ -32,7 +32,7 @@ import com.lw.stripe.R;
 
 import androidx.core.content.res.ResourcesCompat;
 
-public class CircleImageView extends StripeImageView {
+public class CircleImageView extends DownloadImageView {
 
     private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
     private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
