@@ -362,13 +362,17 @@ public class StripePaymentDialog extends DialogFragment {
             mExpiryDate.setError(getString(R.string.__stripe_invalidate_expirydate));
             return false;
         }
-        String mmExpireDate = mExpiryDate.getText().toString();
-        String[] mmMMYY = mmExpireDate.split("/");
+
+        int[] mmMMYY = mExpiryDate.getValidDateFields();
+        if (mmMMYY == null) {
+            mExpiryDate.setError(getString(R.string.__stripe_invalidate_expirydate));
+            return false;
+        }
 
         mCard = new Card(
                 mCreditCard.getText().toString(),
-                Integer.parseInt(mmMMYY[0]),
-                Integer.parseInt(mmMMYY[1]),
+                mmMMYY[0],
+                mmMMYY[1],
                 mCVC.getText().toString());
         if (mCard.validateCard()) {
             return true;
