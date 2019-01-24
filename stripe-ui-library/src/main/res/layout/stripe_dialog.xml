@@ -289,7 +289,7 @@
             android:orientation="horizontal"
             android:padding="2dp">
 
-            <com.lw.stripe.utils.ui.CircleImageView
+            <com.lw.stripe.utils.CircleImageView
                 android:id="@+id/stripe__logo"
                 android:layout_width="68dp"
                 android:layout_height="68dp"

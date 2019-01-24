@@ -1,4 +1,4 @@
-package com.lw.stripe.utils.ui;
+package com.lw.stripe.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
