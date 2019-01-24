@@ -1,4 +1,4 @@
-package com.lw.stripe.utils.ui;
+package com.lw.stripe.utils;
 
 /*
   Copyright 2015-present Yukari Sakurai

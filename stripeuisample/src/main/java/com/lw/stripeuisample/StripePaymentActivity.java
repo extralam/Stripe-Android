@@ -38,7 +38,7 @@ public class StripePaymentActivity extends StripeBaseActivity {
                 "https://lh3.googleusercontent.com/R-vJInTblK1KBOqZaSDm_ac270QBHsiIcU9agHnN-rrp9K_lkN8rLzGIH8asCfkb420Q=s512-rw",
                 "Your Shop Name Limited",
                 "$100 Movie Ticket",
-                "hkd",
+                "Extremely long message to test message clipping and text everything to go wrong should go wrong!",
                 1000,
                 new StripePaymentDialog.OnStripePaymentDismissListener() {
                     @Override
