@@ -27,6 +27,7 @@ import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 import com.stripe.android.view.CardNumberEditText;
+import com.stripe.android.view.ExpiryDateEditText;
 
 import java.lang.reflect.Field;
 import java.text.ParseException;
@@ -58,7 +59,7 @@ public class StripePaymentDialog extends DialogFragment {
     private LinearLayout mStripeDialogCvcContainer;
     private LinearLayout mStripeDialogEmailContainer;
     private CardNumberEditText mCreditCard;
-    private EditText mExpiryDate;
+    private ExpiryDateEditText mExpiryDate;
     private EditText mCVC;
     private ImageView mStripeDialogCardIcon;
     private TextView mTitleTextView;
@@ -77,58 +78,7 @@ public class StripePaymentDialog extends DialogFragment {
     private String mCurrency = "";
     private String mEmail = "";
     private float mAmount;
-    /**
-     * Credit Card Edittext Change Listener
-     */
-    private TextWatcher mCreditCardExpireDateTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            String input = s.toString();
-            SimpleDateFormat formatter = new SimpleDateFormat("MM/yy", Locale.GERMANY);
-            Calendar expiryDateDate = Calendar.getInstance();
-            try {
-                expiryDateDate.setTime(formatter.parse(input));
-            } catch (ParseException e) {
-                if (s.length() == 2 && !mLastInput.endsWith("/")) {
-                    int month = Integer.parseInt(input);
-                    if (month <= 12) {
-                        mExpiryDate.setText(mExpiryDate.getText().toString() + "/");
-                        mExpiryDate.setSelection(mExpiryDate.getText().toString().length());
-                    } else {
-                        mExpiryDate.setText(mExpiryDate.getText().toString().substring(0, 1));
-                        mExpiryDate.setSelection(mExpiryDate.getText().toString().length());
-                    }
-                } else if (s.length() == 2 && mLastInput.endsWith("/")) {
-                    int month = Integer.parseInt(input);
-                    if (month <= 12) {
-                        mExpiryDate.setText(mExpiryDate.getText().toString().substring(0, 1));
-                        mExpiryDate.setSelection(mExpiryDate.getText().toString().length());
-                    } else {
-                        mExpiryDate.setText("");
-                        mExpiryDate.setSelection(mExpiryDate.getText().toString().length());
-                    }
-                } else if (s.length() == 1) {
-                    int month = Integer.parseInt(input);
-                    if (month > 1) {
-                        mExpiryDate.setText("0" + mExpiryDate.getText().toString() + "/");
-                        mExpiryDate.setSelection(mExpiryDate.getText().toString().length());
-                    }
-                }
-
-                mLastInput = mExpiryDate.getText().toString();
-            }
-        }
-    };
     /**
      * On Submit Payment Listener
      */
@@ -288,7 +238,6 @@ public class StripePaymentDialog extends DialogFragment {
             mStripeDialogEmailContainer.setVisibility(View.VISIBLE);
         }
 
-        mExpiryDate.addTextChangedListener(mCreditCardExpireDateTextWatcher);
         mCreditCard.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -384,6 +333,26 @@ public class StripePaymentDialog extends DialogFragment {
         });
         //Setting error color required or else text color is transparent. Setting in XML does not work.
         mCreditCard.setErrorColor(ContextCompat.getColor(getContext(), android.R.color.holo_red_light));
+
+        mExpiryDate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (mExpiryDate.getText().length() == 5 && mExpiryDate.isDateValid()) {
+                    mCVC.requestFocus();
+                }
+            }
+        });
+        mExpiryDate.setErrorColor(ContextCompat.getColor(getContext(), android.R.color.holo_red_light));
 
         mExitButton.setOnClickListener(new View.OnClickListener() {
             @Override

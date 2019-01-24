@@ -189,20 +189,30 @@
                                 android:adjustViewBounds="true"
                                 android:src="@drawable/ic_stripe_date"/>
 
-                            <EditText
+                            <com.stripe.android.view.ExpiryDateEditText
                                 android:id="@+id/stripe_dialog_date"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@null"
-                                android:hint="MM / YY"
-                                android:inputType="number"
-                                android:lines="1"
-                                android:maxLength="5"
                                 android:padding="2dp"
+                                android:background="@android:color/transparent"
+                                android:hint="MM / YY"
+                                android:accessibilityTraversalAfter="@+id/stripe_dialog_date"
+                                android:accessibilityTraversalBefore="@id/stripe_dialog_card"
+                                android:nextFocusRight="@+id/et_cvc_number"
+                                android:nextFocusForward="@+id/et_cvc_number"
+                                android:nextFocusDown="@+id/et_cvc_number"
+                                android:nextFocusLeft="@id/stripe_dialog_cvc_container"
+                                android:nextFocusUp="@id/stripe_dialog_cvc_container"
                                 android:textColor="@android:color/black"
                                 android:textColorHint="@android:color/darker_gray"
                                 android:textSize="14sp"
-                                tools:ignore="TextFields"/>
+                                android:imeOptions="actionNext"
+                                android:inputType="date"
+                                android:maxLength="5"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                tools:ignore="UnusedAttribute"
+                                tools:importantForAccessibility="yes"/>
                         </LinearLayout>
 
                         <View
