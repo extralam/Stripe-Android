@@ -482,17 +482,6 @@ public class StripePaymentDialog extends DialogFragment {
         }
     }
 
-    /**
-     * OnStripePaymentDismissListener
-     */
-    public interface OnStripePaymentDismissListener {
-        /**
-         * @param mmDialog - Current Dialog
-         * @param mmToken  {{ @Link com.stripe.android.model.Token}}
-         */
-        void onSuccess(Dialog mmDialog, Token mmToken);
-    }
-
     private void onDeleteEmpty(EditText editText) {
         String fieldText = editText.getText().toString();
         if (fieldText.length() > 1) {
@@ -514,5 +503,16 @@ public class StripePaymentDialog extends DialogFragment {
         } catch (NullPointerException e) {
             Log.e("Hide Keyboard", e.toString());
         }
+    }
+
+    /**
+     * OnStripePaymentDismissListener
+     */
+    public interface OnStripePaymentDismissListener {
+        /**
+         * @param mmDialog - Current Dialog
+         * @param mmToken  {{ @Link com.stripe.android.model.Token}}
+         */
+        void onSuccess(Dialog mmDialog, Token mmToken);
     }
 }
