@@ -2,6 +2,7 @@ package com.lw.stripe;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -359,12 +361,30 @@ public class StripePaymentDialog extends DialogFragment {
                     //Validate credit card and set focus on submit button if successful.
                     if (validateCard()) {
                         Log.d("Card", "Validated");
-                        mStripeDialogPayButton.requestFocus();
+                        //Button cannot be lit up via focused due to keyboard submit handling.
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            mStripeDialogPayButton.setTranslationZ(4);
+                            mStripeDialogPayButton.setTranslationZ(6);
                         }
                     }
                 }
+            }
+        });
+        mCVC.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    mCVC.clearFocus();
+                    mStripeDialogPayButton.performClick();
+                    //Hide keyboard
+                    try {
+                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(mCVC.getWindowToken(), 0);
+                    } catch (IllegalStateException e) {
+                        Log.e("Hide Keyboard", e.toString());
+                    }
+                    return true;
+                }
+                return false;
             }
         });
 

@@ -111,7 +111,9 @@
                 android:paddingTop="16dp"
                 android:paddingBottom="12dp"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingRight="16dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -154,6 +156,7 @@
                             android:maxLength="19"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
+                            android:focusedByDefault="true"
                             tools:ignore="HardcodedText,SpUsage,UnusedAttribute"/>
 
                         <ImageView
