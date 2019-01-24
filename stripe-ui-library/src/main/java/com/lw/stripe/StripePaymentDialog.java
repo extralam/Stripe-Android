@@ -8,10 +8,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -228,6 +230,26 @@ public class StripePaymentDialog extends DialogFragment {
                 }
             }
         });
+
+        mExpiryDate.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN && mExpiryDate.length() == 0) {
+                    onDeleteEmpty(mCreditCard);
+                }
+                return false;
+            }
+        });
+        mCVC.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN && mCVC.length() == 0) {
+                    onDeleteEmpty(mExpiryDate);
+                }
+                return false;
+            }
+        });
+
         mCreditCard.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -452,5 +474,15 @@ public class StripePaymentDialog extends DialogFragment {
          * @param mmToken  {{ @Link com.stripe.android.model.Token}}
          */
         void onSuccess(Dialog mmDialog, Token mmToken);
+    }
+
+    public void onDeleteEmpty(EditText editText) {
+        String fieldText = editText.getText().toString();
+        if (fieldText.length() > 1) {
+            editText.setText(
+                    fieldText.substring(0, fieldText.length() - 1));
+        }
+        editText.requestFocus();
+        editText.setSelection(editText.length());
     }
 }
