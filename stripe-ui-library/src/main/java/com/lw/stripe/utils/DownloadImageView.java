@@ -15,20 +15,20 @@ import java.net.URL;
 /**
  * Created by alan on 31/7/16.
  */
-public class StripeImageView extends ImageView {
+public class DownloadImageView extends ImageView {
 
     private DownloadImageTask task;
     private BitmapCacheManager mBitmapCacheManager;
 
-    public StripeImageView(Context context, AttributeSet attrs, int defStyle) {
+    public DownloadImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
-    public StripeImageView(Context context, AttributeSet attrs) {
+    public DownloadImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public StripeImageView(Context context) {
+    public DownloadImageView(Context context) {
         super(context);
     }
 
