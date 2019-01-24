@@ -2,16 +2,14 @@ package com.lw.stripe;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -30,10 +28,15 @@ import com.stripe.android.view.CardNumberEditText;
 import com.stripe.android.view.ExpiryDateEditText;
 
 import java.lang.reflect.Field;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import static com.stripe.android.model.Card.CVC_LENGTH_AMERICAN_EXPRESS;
+import static com.stripe.android.model.Card.CVC_LENGTH_COMMON;
 
 /**
  * Stripe Payment Dialog
@@ -53,6 +56,7 @@ public class StripePaymentDialog extends DialogFragment {
     // Object
     private OnStripePaymentDismissListener onDismissListener;
     private Stripe mStripe;
+    private Card mCard;
     // UI
     private LinearLayout mStripeDialogCardContainer;
     private LinearLayout mStripeDialogDateContainer;
@@ -85,53 +89,8 @@ public class StripePaymentDialog extends DialogFragment {
     private View.OnClickListener mPayClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mErrorMessage.setVisibility(View.GONE);
-            if (mCreditCard.getText().toString().length() <= 0) {
-                mCreditCard.setError(getString(R.string.__stripe_invalidate_card_number));
-                return;
-            }
-            if (mCVC.getText().toString().length() <= 0) {
-                mCVC.setError(getString(R.string.__stripe_invalidate_cvc));
-                return;
-            }
-            if (mExpiryDate.getText().toString().length() <= 0) {
-                mExpiryDate.setError(getString(R.string.__stripe_invalidate_expirydate));
-                return;
-            }
-            String mmExpireDate = mExpiryDate.getText().toString();
-            String[] mmMMYY = mmExpireDate.split("/");
-
-            Card mmCard = new Card(
-                    mCreditCard.getText().toString(),
-                    Integer.parseInt(mmMMYY[0]),
-                    Integer.parseInt(mmMMYY[1]),
-                    mCVC.getText().toString());
-            if (mmCard.validateCard()) {
-                mStripe.createToken(mmCard, mDefaultPublishKey, new TokenCallback() {
-                    @Override
-                    public void onError(Exception error) {
-                        if (error != null && error.getMessage().length() > 0) {
-                            mErrorMessage.setText(error.getLocalizedMessage());
-                            mErrorMessage.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void onSuccess(Token token) {
-                        if (onDismissListener != null) {
-                            onDismissListener.onSuccess(getDialog(), token);
-                        }
-                    }
-                });
-            } else if (!mmCard.validateNumber()) {
-                mCreditCard.setError(getString(R.string.__stripe_invalidate_card_number));
-            } else if (!mmCard.validateExpiryDate()) {
-                mExpiryDate.setError(getString(R.string.__stripe_invalidate_expirydate));
-            } else if (!mmCard.validateCVC()) {
-                mCVC.setError(getString(R.string.__stripe_invalidate_cvc));
-            } else {
-                mErrorMessage.setText(R.string.__stripe_invalidate_card_detail);
-                mErrorMessage.setVisibility(View.VISIBLE);
+            if (validateCard()) {
+                createStripeToken();
             }
         }
     };
@@ -220,6 +179,7 @@ public class StripePaymentDialog extends DialogFragment {
         return v;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -282,8 +242,7 @@ public class StripePaymentDialog extends DialogFragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (mCreditCard.getText().length() > 0) {
-                    Card mmCard = new Card(mCreditCard.getText().toString(), 0, 0, "");
-                    switch (mmCard.getBrand()) {
+                    switch (mCreditCard.getCardBrand()) {
                         case Card.VISA:
                             mStripeDialogCardIcon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_visa));
                             mStripeDialogCardIcon.setVisibility(View.VISIBLE);
@@ -354,10 +313,102 @@ public class StripePaymentDialog extends DialogFragment {
         });
         mExpiryDate.setErrorColor(ContextCompat.getColor(getContext(), android.R.color.holo_red_light));
 
+        mCVC.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (isCvcMaximalLength(mCreditCard.getCardBrand(), mCVC.getText().toString())) {
+                    Log.d("CVC", "Validated");
+                    //Validate credit card and set focus on submit button if successful.
+                    if (validateCard()) {
+                        Log.d("Card", "Validated");
+                        mStripeDialogPayButton.requestFocus();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            mStripeDialogPayButton.setTranslationZ(4);
+                        }
+                    }
+                }
+            }
+        });
+
         mExitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
+            }
+        });
+    }
+
+    private boolean validateCard() {
+        mErrorMessage.setVisibility(View.GONE);
+        if (mCreditCard.getText().toString().length() <= 0) {
+            mCreditCard.setError(getString(R.string.__stripe_invalidate_card_number));
+            return false;
+        }
+        if (mCVC.getText().toString().length() <= 0) {
+            mCVC.setError(getString(R.string.__stripe_invalidate_cvc));
+            return false;
+        }
+        if (mExpiryDate.getText().toString().length() <= 0) {
+            mExpiryDate.setError(getString(R.string.__stripe_invalidate_expirydate));
+            return false;
+        }
+        String mmExpireDate = mExpiryDate.getText().toString();
+        String[] mmMMYY = mmExpireDate.split("/");
+
+        mCard = new Card(
+                mCreditCard.getText().toString(),
+                Integer.parseInt(mmMMYY[0]),
+                Integer.parseInt(mmMMYY[1]),
+                mCVC.getText().toString());
+        if (mCard.validateCard()) {
+            return true;
+        } else if (!mCard.validateNumber()) {
+            mCreditCard.setError(getString(R.string.__stripe_invalidate_card_number));
+        } else if (!mCard.validateExpiryDate()) {
+            mExpiryDate.setError(getString(R.string.__stripe_invalidate_expirydate));
+        } else if (!mCard.validateCVC()) {
+            mCVC.setError(getString(R.string.__stripe_invalidate_cvc));
+        } else {
+            mErrorMessage.setText(R.string.__stripe_invalidate_card_detail);
+            mErrorMessage.setVisibility(View.VISIBLE);
+        }
+
+        return false;
+    }
+
+    private boolean isCvcMaximalLength(@NonNull @Card.CardBrand String cardBrand, String cvcText) {
+        if (Card.AMERICAN_EXPRESS.equals(cardBrand)) {
+            return cvcText.trim().length() == CVC_LENGTH_AMERICAN_EXPRESS;
+        } else {
+            return cvcText.trim().length() == CVC_LENGTH_COMMON;
+        }
+    }
+
+    private void createStripeToken() {
+        mStripe.createToken(mCard, mDefaultPublishKey, new TokenCallback() {
+            @Override
+            public void onError(Exception error) {
+                if (error != null && error.getMessage().length() > 0) {
+                    mErrorMessage.setText(error.getLocalizedMessage());
+                    mErrorMessage.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onSuccess(Token token) {
+                if (onDismissListener != null) {
+                    onDismissListener.onSuccess(getDialog(), token);
+                }
             }
         });
     }
