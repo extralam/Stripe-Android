@@ -65,6 +65,7 @@ public class StripePaymentDialog extends DialogFragment {
     private LinearLayout mStripeDialogDateContainer;
     private LinearLayout mStripeDialogCvcContainer;
     private LinearLayout mStripeDialogEmailContainer;
+    private LinearLayout mStripeDialogInputContainer;
     private CardNumberEditText mCreditCard;
     private ExpiryDateEditText mExpiryDate;
     private EditText mCVC;
@@ -94,6 +95,7 @@ public class StripePaymentDialog extends DialogFragment {
         public void onClick(View v) {
             Log.d("Button", "Clicked");
             if (validateCard()) {
+                hideKeyboard();
                 createStripeToken();
             }
         }
@@ -168,6 +170,7 @@ public class StripePaymentDialog extends DialogFragment {
         mStripeDialogDateContainer = v.findViewById(R.id.stripe_dialog_date_container);
         mStripeDialogCvcContainer = v.findViewById(R.id.stripe_dialog_cvc_container);
         mStripeDialogEmailContainer = v.findViewById(R.id.stripe_dialog_email_container);
+        mStripeDialogInputContainer = v.findViewById(R.id.stripe_dialog_input_container);
         mExitButton = v.findViewById(R.id.stripe_dialog_exit);
         mTitleTextView = v.findViewById(R.id.stripe_dialog_txt1);
         mDescriptionTextView = v.findViewById(R.id.stripe_dialog_txt2);
@@ -373,17 +376,11 @@ public class StripePaymentDialog extends DialogFragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    mCVC.clearFocus();
                     mStripeDialogPayButton.performClick();
-                    //Hide keyboard
-                    try {
-                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(mCVC.getWindowToken(), 0);
-                    } catch (IllegalStateException e) {
-                        Log.e("Hide Keyboard", e.toString());
-                    }
+                    hideKeyboard();
                     return true;
                 }
+
                 return false;
             }
         });
@@ -496,7 +493,7 @@ public class StripePaymentDialog extends DialogFragment {
         void onSuccess(Dialog mmDialog, Token mmToken);
     }
 
-    public void onDeleteEmpty(EditText editText) {
+    private void onDeleteEmpty(EditText editText) {
         String fieldText = editText.getText().toString();
         if (fieldText.length() > 1) {
             editText.setText(
@@ -504,5 +501,18 @@ public class StripePaymentDialog extends DialogFragment {
         }
         editText.requestFocus();
         editText.setSelection(editText.length());
+    }
+
+    private void hideKeyboard() {
+        //Hide keyboard
+        try {
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(mStripeDialogInputContainer.getWindowToken(), 0);
+            mStripeDialogInputContainer.requestFocus();
+        } catch (IllegalStateException e) {
+            Log.e("Hide Keyboard", e.toString());
+        } catch (NullPointerException e) {
+            Log.e("Hide Keyboard", e.toString());
+        }
     }
 }
