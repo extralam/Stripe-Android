@@ -326,6 +326,12 @@ public class StripePaymentDialog extends DialogFragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                //Limit length to 3 if card is not AMEX.
+                if (!Card.AMERICAN_EXPRESS.equals(mCreditCard.getCardBrand()) && editable.length() == 4) {
+                    mCVC.setText(mCVC.getText().toString().substring(0, 3));
+                    mCVC.setSelection(3);
+                }
+
                 if (isCvcMaximalLength(mCreditCard.getCardBrand(), mCVC.getText().toString())) {
                     Log.d("CVC", "Validated");
                     //Validate credit card and set focus on submit button if successful.
