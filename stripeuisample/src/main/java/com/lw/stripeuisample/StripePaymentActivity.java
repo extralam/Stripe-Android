@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 
 import com.lw.stripe.StripePaymentDialog;
-import com.stripe.android.model.Token;
 
 public class StripePaymentActivity extends StripeBaseActivity {
 
@@ -39,7 +38,6 @@ public class StripePaymentActivity extends StripeBaseActivity {
                 "Your Shop Name Limited",
                 "$100 Movie Ticket",
                 "Extremely long message to test message clipping and text everything to go wrong should go wrong!",
-                1000,
                 true,
                 new StripePaymentDialog.OnStripePaymentDismissListener() {
                     @Override

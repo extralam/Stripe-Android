@@ -147,7 +147,6 @@
                             android:background="@android:color/transparent"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:focusedByDefault="true"
                             android:hint="Card number"
                             android:imeOptions="actionNext"
                             android:inputType="number"
@@ -156,8 +155,10 @@
                             android:nextFocusDown="@+id/stripe_dialog_date"
                             android:nextFocusForward="@+id/stripe_dialog_date"
                             android:padding="2dp"
+                            android:saveEnabled="true"
                             android:textColor="@android:color/black"
                             android:textColorHint="@android:color/darker_gray"
+                            android:textIsSelectable="false"
                             android:textSize="14dp"
                             tools:ignore="HardcodedText,SpUsage,UnusedAttribute"/>
 

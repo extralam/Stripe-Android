@@ -58,8 +58,7 @@ public class StripePaymentDialog extends DialogFragment {
     private static final String EXTRA_SHOP_IMG_URL = "EXTRA_SHOP_IMG_URL";
     private static final String EXTRA_SHOP_NAME = "EXTRA_SHOP_NAME";
     private static final String EXTRA_DESCRIPTION = "EXTRA_DESCRIPTION";
-    private static final String EXTRA_CURRENCY = "EXTRA_CURRENCY";
-    private static final String EXTRA_AMOUNT = "EXTRA_AMOUNT";
+    private static final String EXTRA_PAY_BUTTON_TEXT = "EXTRA_PAY_BUTTON_TEXT";
     private static final String EXTRA_USE_SOURCE = "EXTRA_USE_SOURCE";
     // Object
     private OnStripePaymentDismissListener onDismissListener;
@@ -88,9 +87,8 @@ public class StripePaymentDialog extends DialogFragment {
     private Integer mShopImage = 0;
     private String mShopImageUrl = "";
     private String mDescription = "";
-    private String mCurrency = "";
+    private String mPayButtonText = "";
     private String mEmail = "";
-    private float mAmount;
     private Boolean mUseSource = false;
 
     /**
@@ -115,24 +113,24 @@ public class StripePaymentDialog extends DialogFragment {
      * Open the Stripe Payment Dialog
      *
      * @param fm                 - FragmentManager {{@link FragmentManager}}
-     * @param publish_key        - Stripe Publish Key (not Secret Key , Secret Key store at server side )
+     * @param publishKey        - Stripe Publish Key (not Secret Key , Secret Key store at server side )
      * @param email             - User Email
-     * @param shop_img_url          - Stripe Shop Image
-     * @param shop_name         - Stripe Shop Name
+     * @param shopImg - Stripe Shop Image Drawable ID
+     * @param shopImgUrl          - Stripe Shop Image
+     * @param shopName         - Stripe Shop Name
      * @param description       - Description of your payment (e.g $100 Movie Coupon)
-     * @param currency          - Currency of your payment (e.g HKD)
-     * @param amount            - Amount of your payment (e.g 100 then amount is 10000)
+     * @param payButtonText          - Text to show on Pay Button
+     * @param useSource - Return Stripe source or token.
      * @param OnDismissListener - Callback Listener
      */
     public static void show(FragmentManager fm,
-                            String publish_key,
+                            String publishKey,
                             String email,
-                            Integer shop_img,
-                            String shop_img_url,
-                            String shop_name,
+                            Integer shopImg,
+                            String shopImgUrl,
+                            String shopName,
                             String description,
-                            String currency,
-                            float amount,
+                            String payButtonText,
                             boolean useSource,
                             OnStripePaymentDismissListener OnDismissListener) {
         if (fm == null) {
@@ -145,14 +143,13 @@ public class StripePaymentDialog extends DialogFragment {
         StripePaymentDialog instance = new StripePaymentDialog();
         instance.setDismissListener(OnDismissListener);
         Bundle args = new Bundle();
-        args.putString(EXTRA_DEFAULT_PUBLISH_KEY, publish_key);
+        args.putString(EXTRA_DEFAULT_PUBLISH_KEY, publishKey);
         args.putString(EXTRA_USER_EMAIL, email);
-        args.putString(EXTRA_SHOP_NAME, shop_name);
-        args.putInt(EXTRA_SHOP_IMG, shop_img);
-        args.putString(EXTRA_SHOP_IMG_URL, shop_img_url);
+        args.putString(EXTRA_SHOP_NAME, shopName);
+        args.putInt(EXTRA_SHOP_IMG, shopImg);
+        args.putString(EXTRA_SHOP_IMG_URL, shopImgUrl);
         args.putString(EXTRA_DESCRIPTION, description);
-        args.putString(EXTRA_CURRENCY, currency);
-        args.putFloat(EXTRA_AMOUNT, amount);
+        args.putString(EXTRA_PAY_BUTTON_TEXT, payButtonText);
         args.putBoolean(EXTRA_USE_SOURCE, useSource);
         instance.setArguments(args);
         instance.show(fm, TAG);
@@ -172,8 +169,7 @@ public class StripePaymentDialog extends DialogFragment {
             mShopImage = getArguments().getInt(EXTRA_SHOP_IMG , 0);
             mShopImageUrl = getArguments().getString(EXTRA_SHOP_IMG_URL);
             mDescription = getArguments().getString(EXTRA_DESCRIPTION);
-            mCurrency = getArguments().getString(EXTRA_CURRENCY);
-            mAmount = getArguments().getFloat(EXTRA_AMOUNT);
+            mPayButtonText = getArguments().getString(EXTRA_PAY_BUTTON_TEXT);
             mUseSource = getArguments().getBoolean(EXTRA_USE_SOURCE);
         }
     }
@@ -219,7 +215,7 @@ public class StripePaymentDialog extends DialogFragment {
         }
         mTitleTextView.setText(mShopName);
         mDescriptionTextView.setText(mDescription);
-        mStripeDialogPayButton.setText(getString(R.string.__stripe_pay) + " " + mCurrency + " " + (mAmount / 100));
+        mStripeDialogPayButton.setText(mPayButtonText);
         mStripeDialogPayButton.setOnClickListener(mPayClickListener);
         if (mEmail != null && mEmail.length() > 0) {
             mEmailTextView.setText(mEmail);
