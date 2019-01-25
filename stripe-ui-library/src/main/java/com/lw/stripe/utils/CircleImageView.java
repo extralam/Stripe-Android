@@ -24,6 +24,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
@@ -77,32 +78,33 @@ public class CircleImageView extends DownloadImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        BitmapDrawable drawable = (BitmapDrawable) getDrawable();
-
+        Drawable drawable = getDrawable();
         if (drawable == null) return;
         if (getWidth() == 0 || getHeight() == 0) return;
 
-        Bitmap srcBmp = drawable.getBitmap();
-        if (srcBmp == null) return;
+        if (drawable instanceof BitmapDrawable) {
+            Bitmap srcBmp = ((BitmapDrawable) drawable).getBitmap();
+            if (srcBmp == null) return;
 
-        Bitmap image = getSquareBitmap(srcBmp);
+            Bitmap image = getSquareBitmap(srcBmp);
 
-        canvasSize = getWidth();
-        if (getWidth() < canvasSize)
             canvasSize = getWidth();
+            if (getWidth() < canvasSize)
+                canvasSize = getWidth();
 
-        BitmapShader shader = new BitmapShader(
-                Bitmap.createScaledBitmap(image, canvasSize, canvasSize, false),
-                Shader.TileMode.CLAMP,
-                Shader.TileMode.CLAMP);
-        paint.setShader(shader);
+            BitmapShader shader = new BitmapShader(
+                    Bitmap.createScaledBitmap(image, canvasSize, canvasSize, false),
+                    Shader.TileMode.CLAMP,
+                    Shader.TileMode.CLAMP);
+            paint.setShader(shader);
 
-        float circleCenter = canvasSize / 2f;
-        // circleCenter is the x or y of the view's center
-        // radius is the radius in pixels of the cirle to be drawn
-        // paint contains the shader that will texture the shape
-        canvas.drawCircle(circleCenter, circleCenter, circleCenter, paintBorder);
-        canvas.drawCircle(circleCenter, circleCenter, circleCenter - borderWidth / 2f, paint);
+            float circleCenter = canvasSize / 2f;
+            // circleCenter is the x or y of the view's center
+            // radius is the radius in pixels of the cirle to be drawn
+            // paint contains the shader that will texture the shape
+            canvas.drawCircle(circleCenter, circleCenter, circleCenter, paintBorder);
+            canvas.drawCircle(circleCenter, circleCenter, circleCenter - borderWidth / 2f, paint);
+        }
     }
 
     public void showBackground(boolean isBackground) {

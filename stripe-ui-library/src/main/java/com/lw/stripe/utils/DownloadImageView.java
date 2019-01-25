@@ -48,7 +48,7 @@ public class DownloadImageView extends ImageView {
     }
 
     private boolean isUrl(String url) {
-        return (url.startsWith("http") || url.startsWith("https"));
+        return android.util.Patterns.WEB_URL.matcher(url).matches();
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
