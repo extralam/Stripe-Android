@@ -406,6 +406,9 @@ public class StripePaymentDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 dismiss();
+                if (onDismissListener != null) {
+                    onDismissListener.onDismiss();
+                }
             }
         });
     }
@@ -508,9 +511,8 @@ public class StripePaymentDialog extends DialogFragment {
 
     private void setupDialog() {
         if (getDialog().getWindow() != null) {
-            // special the dialog fragment, make it full screen
+            //Set dialog fragment full screen.
             setCancelable(false);
-//        getDialog().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             getDialog().getWindow().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
             getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -550,5 +552,6 @@ public class StripePaymentDialog extends DialogFragment {
          * @param token  {{ @Link com.stripe.android.model.Token}}
          */
         void onSuccess(Dialog dialog, String token);
+        void onDismiss();
     }
 }
