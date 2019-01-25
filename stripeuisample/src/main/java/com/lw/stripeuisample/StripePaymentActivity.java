@@ -42,7 +42,11 @@ public class StripePaymentActivity extends StripeBaseActivity {
                 new StripePaymentDialog.OnStripePaymentDismissListener() {
                     @Override
                     public void onSuccess(Dialog dialog, String id) {
-                        Log.d("atest", "id : " + id);
+                        Log.d("Stripe Success", "Object ID : " + id);
+                    }
+                    @Override
+                    public void onDismiss() {
+                        Log.d("Stripe Dismiss", "Dismissed");
                     }
                 });
     }
