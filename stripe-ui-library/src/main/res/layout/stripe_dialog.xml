@@ -38,38 +38,33 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/ic_exit"/>
+                    android:src="@drawable/ic_exit"
+                    tools:ignore="RtlHardcoded"/>
 
                 <TextView
                     android:id="@+id/stripe_dialog_txt1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:padding="2dp"
                     android:text=""
                     android:textColor="@android:color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    tools:text="Product Title"
+                    tools:ignore="SpUsage"/>
 
                 <TextView
                     android:id="@+id/stripe_dialog_txt2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginBottom="6dp"
                     android:padding="2dp"
                     android:text=""
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="12sp"/>
-
-                <TextView
-                    android:id="@+id/stripe_dialog_error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:padding="2dp"
-                    android:text=""
-                    android:textColor="@android:color/holo_red_light"
-                    android:textSize="12sp"
-                    android:visibility="gone"/>
+                    android:textSize="12dp"
+                    tools:text="by Seller Subtitle"
+                    tools:ignore="SpUsage"/>
 
                 <LinearLayout
                     android:id="@+id/stripe_dialog_email_container"
@@ -93,7 +88,8 @@
                         android:padding="2dp"
                         android:text=""
                         android:textColor="@android:color/black"
-                        android:textSize="12sp"/>
+                        android:textSize="12dp"
+                        tools:ignore="SpUsage"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -218,8 +214,8 @@
                                 android:padding="2dp"
                                 android:textColor="@android:color/black"
                                 android:textColorHint="@android:color/darker_gray"
-                                android:textSize="14sp"
-                                tools:ignore="HardcodedText,UnusedAttribute"
+                                android:textSize="14dp"
+                                tools:ignore="HardcodedText,SpUsage,UnusedAttribute"
                                 tools:importantForAccessibility="yes"/>
                         </LinearLayout>
 
@@ -259,12 +255,29 @@
                                 android:padding="2dp"
                                 android:textColor="@android:color/black"
                                 android:textColorHint="@android:color/darker_gray"
-                                android:textSize="14sp"
-                                tools:ignore="HardcodedText,UnusedAttribute"
+                                android:textSize="14dp"
+                                tools:ignore="HardcodedText,SpUsage,UnusedAttribute"
                                 tools:importantForAccessibility="yes"/>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/stripe_dialog_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:padding="2dp"
+                    android:text=""
+                    android:textColor="@android:color/holo_red_light"
+                    android:textSize="12dp"
+                    android:maxLines="3"
+                    android:ellipsize="end"
+                    android:visibility="gone"
+                    tools:text="Uh oh, something went wrong!"
+                    tools:visibility="visible"
+                    tools:ignore="SpUsage"/>
 
                 <Button
                     android:id="@+id/stripe_dialog_paybutton"

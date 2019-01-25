@@ -33,7 +33,7 @@ public class StripePaymentActivity extends StripeBaseActivity {
         StripePaymentDialog.show(
                 getSupportFragmentManager(),
                 mDefaultPublishKey,
-                "test@test.com",
+                "",
                 0,
                 "https://lh3.googleusercontent.com/R-vJInTblK1KBOqZaSDm_ac270QBHsiIcU9agHnN-rrp9K_lkN8rLzGIH8asCfkb420Q=s512-rw",
                 "Your Shop Name Limited",
