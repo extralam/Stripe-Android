@@ -23,9 +23,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lw.stripe.utils.CircleImageView;
+import com.stripe.android.SourceCallback;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
+import com.stripe.android.model.Source;
+import com.stripe.android.model.SourceParams;
 import com.stripe.android.model.Token;
 import com.stripe.android.view.CardNumberEditText;
 import com.stripe.android.view.ExpiryDateEditText;
@@ -33,12 +36,10 @@ import com.stripe.android.view.ExpiryDateEditText;
 import java.lang.reflect.Field;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import static com.stripe.android.model.Card.CVC_LENGTH_AMERICAN_EXPRESS;
 import static com.stripe.android.model.Card.CVC_LENGTH_COMMON;
@@ -59,6 +60,7 @@ public class StripePaymentDialog extends DialogFragment {
     private static final String EXTRA_DESCRIPTION = "EXTRA_DESCRIPTION";
     private static final String EXTRA_CURRENCY = "EXTRA_CURRENCY";
     private static final String EXTRA_AMOUNT = "EXTRA_AMOUNT";
+    private static final String EXTRA_USE_SOURCE = "EXTRA_USE_SOURCE";
     // Object
     private OnStripePaymentDismissListener onDismissListener;
     private Stripe mStripe;
@@ -81,7 +83,6 @@ public class StripePaymentDialog extends DialogFragment {
     private Button mStripeDialogPayButton;
     private ImageView mExitButton;
     // VARIABLE
-    private String mLastInput = "";
     private String mDefaultPublishKey = "";
     private String mShopName = "";
     private Integer mShopImage = 0;
@@ -90,6 +91,7 @@ public class StripePaymentDialog extends DialogFragment {
     private String mCurrency = "";
     private String mEmail = "";
     private float mAmount;
+    private Boolean mUseSource = false;
 
     /**
      * On Submit Payment Listener
@@ -100,7 +102,11 @@ public class StripePaymentDialog extends DialogFragment {
             Log.d("Button", "Clicked");
             if (validateCard()) {
                 hideKeyboard();
-                createStripeToken();
+                if (mUseSource) {
+                    createStripeSource();
+                } else {
+                    createStripeToken();
+                }
             }
         }
     };
@@ -127,6 +133,7 @@ public class StripePaymentDialog extends DialogFragment {
                             String description,
                             String currency,
                             float amount,
+                            boolean useSource,
                             OnStripePaymentDismissListener OnDismissListener) {
         if (fm == null) {
             return;
@@ -140,12 +147,13 @@ public class StripePaymentDialog extends DialogFragment {
         Bundle args = new Bundle();
         args.putString(EXTRA_DEFAULT_PUBLISH_KEY, publish_key);
         args.putString(EXTRA_USER_EMAIL, email);
+        args.putString(EXTRA_SHOP_NAME, shop_name);
         args.putInt(EXTRA_SHOP_IMG, shop_img);
         args.putString(EXTRA_SHOP_IMG_URL, shop_img_url);
-        args.putString(EXTRA_SHOP_NAME, shop_name);
         args.putString(EXTRA_DESCRIPTION, description);
         args.putString(EXTRA_CURRENCY, currency);
         args.putFloat(EXTRA_AMOUNT, amount);
+        args.putBoolean(EXTRA_USE_SOURCE, useSource);
         instance.setArguments(args);
         instance.show(fm, TAG);
     }
@@ -157,16 +165,16 @@ public class StripePaymentDialog extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         if (getArguments() != null) {
             mDefaultPublishKey = getArguments().getString(EXTRA_DEFAULT_PUBLISH_KEY);
+            mEmail = getArguments().getString(EXTRA_USER_EMAIL);
             mShopName = getArguments().getString(EXTRA_SHOP_NAME);
             mShopImage = getArguments().getInt(EXTRA_SHOP_IMG , 0);
             mShopImageUrl = getArguments().getString(EXTRA_SHOP_IMG_URL);
             mDescription = getArguments().getString(EXTRA_DESCRIPTION);
             mCurrency = getArguments().getString(EXTRA_CURRENCY);
             mAmount = getArguments().getFloat(EXTRA_AMOUNT);
-            mEmail = getArguments().getString(EXTRA_USER_EMAIL);
+            mUseSource = getArguments().getBoolean(EXTRA_USE_SOURCE);
         }
     }
 
@@ -452,17 +460,36 @@ public class StripePaymentDialog extends DialogFragment {
     private void createStripeToken() {
         mStripe.createToken(mCard, mDefaultPublishKey, new TokenCallback() {
             @Override
+            public void onSuccess(Token token) {
+                if (onDismissListener != null) {
+                    onDismissListener.onSuccess(getDialog(), token.getId());
+                }
+            }
+            @Override
             public void onError(Exception error) {
                 if (error != null && error.getMessage().length() > 0) {
                     mErrorMessage.setText(error.getLocalizedMessage());
                     mErrorMessage.setVisibility(View.VISIBLE);
                 }
             }
+        });
+    }
 
+    private void createStripeSource() {
+        SourceParams cardSourceParams = SourceParams.createCardParams(mCard);
+        Stripe stripe = new Stripe(getContext(), mDefaultPublishKey);
+        stripe.createSource(cardSourceParams, new SourceCallback() {
             @Override
-            public void onSuccess(Token token) {
+            public void onSuccess(Source source) {
                 if (onDismissListener != null) {
-                    onDismissListener.onSuccess(getDialog(), token);
+                    onDismissListener.onSuccess(getDialog(), source.getId());
+                }
+            }
+            @Override
+            public void onError(Exception error) {
+                if (error != null && error.getMessage().length() > 0) {
+                    mErrorMessage.setText(error.getLocalizedMessage());
+                    mErrorMessage.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -523,9 +550,9 @@ public class StripePaymentDialog extends DialogFragment {
      */
     public interface OnStripePaymentDismissListener {
         /**
-         * @param mmDialog - Current Dialog
-         * @param mmToken  {{ @Link com.stripe.android.model.Token}}
+         * @param dialog - Current Dialog
+         * @param token  {{ @Link com.stripe.android.model.Token}}
          */
-        void onSuccess(Dialog mmDialog, Token mmToken);
+        void onSuccess(Dialog dialog, String token);
     }
 }

@@ -40,10 +40,11 @@ public class StripePaymentActivity extends StripeBaseActivity {
                 "$100 Movie Ticket",
                 "Extremely long message to test message clipping and text everything to go wrong should go wrong!",
                 1000,
+                true,
                 new StripePaymentDialog.OnStripePaymentDismissListener() {
                     @Override
-                    public void onSuccess(Dialog mmDialog, Token mmToken) {
-                        Log.d("atest", "id : " + mmToken.getId());
+                    public void onSuccess(Dialog dialog, String id) {
+                        Log.d("atest", "id : " + id);
                     }
                 });
     }
