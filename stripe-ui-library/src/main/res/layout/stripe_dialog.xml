@@ -3,6 +3,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:orientation="vertical">
 
     <FrameLayout
@@ -284,22 +285,51 @@
                     tools:visibility="visible"
                     tools:ignore="SpUsage"/>
 
-                <Button
-                    android:id="@+id/stripe_dialog_paybutton"
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/stripe_btn_background_selector"
-                    android:ellipsize="middle"
-                    android:focusable="true"
-                    android:padding="8dp"
-                    android:singleLine="true"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    tools:text="Payment Button"/>
+                    android:paddingLeft="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="12dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+
+                    <Button
+                        android:id="@+id/stripe_dialog_paybutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/stripe_btn_background_selector"
+                        android:ellipsize="middle"
+                        android:focusable="true"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:elevation="2dp"
+                        tools:text="Payment Button"
+                        tools:ignore="UnusedAttribute"/>
+
+                    <ProgressBar
+                        android:id="@+id/progress_bar_loading"
+                        android:theme="@style/StripeProgressBarLoading"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center"
+                        android:elevation="2dp"
+                        android:visibility="gone"
+                        tools:ignore="UnusedAttribute"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/image_payment_success"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/animated_check_circle"
+                        android:elevation="2dp"
+                        tools:ignore="UnusedAttribute"
+                        android:visibility="gone"/>
+                </FrameLayout>
             </LinearLayout>
         </LinearLayout>
 
