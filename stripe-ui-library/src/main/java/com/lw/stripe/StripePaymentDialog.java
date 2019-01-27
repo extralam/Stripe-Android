@@ -5,6 +5,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -70,6 +73,7 @@ public class StripePaymentDialog extends DialogFragment {
     private OnStripePaymentDismissListener onDismissListener;
     private Stripe mStripe;
     private Card mCard;
+    private Handler mHandler;
     // UI
     private LinearLayout mStripeDialogCardContainer;
     private LinearLayout mStripeDialogDateContainer;
@@ -98,6 +102,8 @@ public class StripePaymentDialog extends DialogFragment {
     private String mPayButtonText = "";
     private String mEmail = "";
     private Boolean mUseSource = false;
+    private Boolean mPaymentComplete = false;
+    private Boolean mPaymentTimeout = false;
 
     /**
      * On Submit Payment Listener
@@ -107,41 +113,46 @@ public class StripePaymentDialog extends DialogFragment {
         public void onClick(View v) {
             Log.d("Button", "Clicked");
 
+            //Reset payment state.
+            mErrorMessage.setVisibility(View.GONE);
+            mPaymentTimeout = false;
+
+            if (!validateCard()) {
+               return;
+            }
+
+            if (!isConnected()) {
+                setErrorMessage(getString(R.string.stripe_error_connection));
+                return;
+            }
+
+            hideKeyboard();
             mStripeDialogPayButton.setText("");
+            mStripeDialogPayButton.setEnabled(false);
             mProgressBarLoading.setVisibility(View.VISIBLE);
 
-            final Handler handler = new Handler();
+            if (mUseSource) {
+                createStripeSource();
+            } else {
+                createStripeToken();
+            }
+
+            //Start timeout timer.
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    mProgressBarLoading.setVisibility(View.GONE);
-                    mImagePaymentSuccess.setVisibility(View.VISIBLE);
-                    Drawable d = mImagePaymentSuccess.getDrawable();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        if (d instanceof Animatable) {
-                            ((Animatable) d).start();
+                    if (getDialog().isShowing()) {
+                        if (!mPaymentComplete) {
+                            mPaymentTimeout = true;
+                            mProgressBarLoading.setVisibility(View.GONE);
+                            mStripeDialogPayButton.setText(mPayButtonText);
+                            mStripeDialogPayButton.setEnabled(true);
+                            setErrorMessage(getString(R.string.stripe_error_timeout));
                         }
                     }
                 }
             };
-            handler.postDelayed(r, 1000);
-
-            Runnable r2 = new Runnable() {
-                @Override
-                public void run() {
-                    onDismissListener.onSuccess(getDialog(), "");
-                }
-            };
-            handler.postDelayed(r2, 3000);
-
-//            if (validateCard()) {
-//                hideKeyboard();
-//                if (mUseSource) {
-//                    createStripeSource();
-//                } else {
-//                    createStripeToken();
-//                }
-//            }
+            mHandler.postDelayed(r, getResources().getInteger(R.integer.stripe_payment_timeout));
         }
     };
 
@@ -209,6 +220,7 @@ public class StripePaymentDialog extends DialogFragment {
             mPayButtonText = getArguments().getString(EXTRA_PAY_BUTTON_TEXT);
             mUseSource = getArguments().getBoolean(EXTRA_USE_SOURCE);
         }
+        mHandler = new Handler();
     }
 
     @Override
@@ -474,14 +486,13 @@ public class StripePaymentDialog extends DialogFragment {
         if (mCard.validateCard()) {
             return true;
         } else if (!mCard.validateNumber()) {
-            mCreditCard.setError(getString(R.string.__stripe_invalidate_card_number));
+            mCreditCard.setError(getString(R.string.stripe_invalidate_card_number));
         } else if (!mCard.validateExpiryDate()) {
-            mExpiryDate.setError(getString(R.string.__stripe_invalidate_expirydate));
+            mExpiryDate.setError(getString(R.string.stripe_invalidate_expirydate));
         } else if (!mCard.validateCVC()) {
-            mCVC.setError(getString(R.string.__stripe_invalidate_cvc));
+            mCVC.setError(getString(R.string.stripe_invalidate_cvc));
         } else {
-            mErrorMessage.setText(R.string.__stripe_invalidate_card_detail);
-            mErrorMessage.setVisibility(View.VISIBLE);
+            setErrorMessage(getString(R.string.stripe_invalidate_card_detail));
         }
 
         return false;
@@ -495,19 +506,19 @@ public class StripePaymentDialog extends DialogFragment {
         }
     }
 
+
+
     private void createStripeToken() {
         mStripe.createToken(mCard, mDefaultPublishKey, new TokenCallback() {
             @Override
             public void onSuccess(Token token) {
-                if (onDismissListener != null) {
-                    onDismissListener.onSuccess(getDialog(), token.getId());
-                }
+                setSubmitSuccess(token.getId());
             }
             @Override
             public void onError(Exception error) {
                 if (error != null && error.getMessage().length() > 0) {
-                    mErrorMessage.setText(error.getLocalizedMessage());
-                    mErrorMessage.setVisibility(View.VISIBLE);
+                    setErrorMessage(error.getLocalizedMessage());
+                    setSubmitError();
                 }
             }
         });
@@ -519,23 +530,65 @@ public class StripePaymentDialog extends DialogFragment {
         stripe.createSource(cardSourceParams, new SourceCallback() {
             @Override
             public void onSuccess(Source source) {
-                if (onDismissListener != null) {
-                    onDismissListener.onSuccess(getDialog(), source.getId());
-                }
+                setSubmitSuccess(source.getId());
             }
             @Override
             public void onError(Exception error) {
                 if (error != null && error.getMessage().length() > 0) {
-                    mErrorMessage.setText(error.getLocalizedMessage());
-                    mErrorMessage.setVisibility(View.VISIBLE);
+                    setErrorMessage(error.getLocalizedMessage());
+                    setSubmitError();
                 }
             }
         });
     }
 
+    private void setSubmitSuccess(final String id) {
+        if (getDialog() != null && getDialog().isShowing()) {
+            if (!mPaymentTimeout) {
+                mPaymentComplete = true;
+
+                mProgressBarLoading.setVisibility(View.GONE);
+                mImagePaymentSuccess.setVisibility(View.VISIBLE);
+                Drawable d = mImagePaymentSuccess.getDrawable();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    if (d instanceof Animatable) {
+                        ((Animatable) d).start();
+                    }
+                }
+
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getDialog().isShowing()) {
+                            dismiss();
+                            if (onDismissListener != null) {
+                                onDismissListener.onSuccess(getDialog(), id);
+                            }
+                        }
+                    }
+                };
+                mHandler.postDelayed(r, 2000);
+            }
+        }
+    }
+
+    private void setSubmitError() {
+        mHandler.removeCallbacksAndMessages(null);
+        mProgressBarLoading.setVisibility(View.GONE);
+        mStripeDialogPayButton.setText(mPayButtonText);
+        mStripeDialogPayButton.setEnabled(true);
+        setErrorMessage(getString(R.string.stripe_error_payment));
+    }
+
+    private void setErrorMessage(String errorMessage) {
+        mErrorMessage.setText(errorMessage);
+        mErrorMessage.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
+        mHandler.removeCallbacksAndMessages(null);
         try {
             Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
             childFragmentManager.setAccessible(true);
@@ -580,6 +633,32 @@ public class StripePaymentDialog extends DialogFragment {
         } catch (NullPointerException e) {
             Log.e("Hide Keyboard", e.toString());
         }
+    }
+
+    private boolean isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Network[] networks = connectivityManager.getAllNetworks();
+                NetworkInfo networkInfo;
+                for (Network network: networks) {
+                    networkInfo = connectivityManager.getNetworkInfo(network);
+                    if (networkInfo.getState() == NetworkInfo.State.CONNECTED) {
+                        return true;
+                    }
+                }
+            } else {
+                NetworkInfo[] networkInfos = connectivityManager.getAllNetworkInfo();
+                if (networkInfos != null) {
+                    for (NetworkInfo networkInfo: networkInfos) {
+                        if (networkInfo.getState() == NetworkInfo.State.CONNECTED)
+                            return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

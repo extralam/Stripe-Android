@@ -324,6 +324,7 @@
                         android:id="@+id/image_payment_success"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
+                        android:padding="2dp"
                         android:layout_gravity="center"
                         app:srcCompat="@drawable/animated_check_circle"
                         android:elevation="2dp"
