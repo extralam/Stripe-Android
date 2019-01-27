@@ -512,11 +512,13 @@ public class StripePaymentDialog extends DialogFragment {
         mStripe.createToken(mCard, mDefaultPublishKey, new TokenCallback() {
             @Override
             public void onSuccess(Token token) {
+                Log.d("Stripe Token Success: ", token.toString());
                 setSubmitSuccess(token.getId());
             }
             @Override
             public void onError(Exception error) {
                 if (error != null && error.getMessage().length() > 0) {
+                    Log.d("Stripe Token Error: ", error.getLocalizedMessage());
                     setErrorMessage(error.getLocalizedMessage());
                     setSubmitError();
                 }
@@ -526,15 +528,16 @@ public class StripePaymentDialog extends DialogFragment {
 
     private void createStripeSource() {
         SourceParams cardSourceParams = SourceParams.createCardParams(mCard);
-        Stripe stripe = new Stripe(getContext(), mDefaultPublishKey);
-        stripe.createSource(cardSourceParams, new SourceCallback() {
+        mStripe.createSource(cardSourceParams, new SourceCallback() {
             @Override
             public void onSuccess(Source source) {
+                Log.d("Stripe Token Success: ", source.toString());
                 setSubmitSuccess(source.getId());
             }
             @Override
             public void onError(Exception error) {
                 if (error != null && error.getMessage().length() > 0) {
+                    Log.d("Stripe Token Error: ", error.getLocalizedMessage());
                     setErrorMessage(error.getLocalizedMessage());
                     setSubmitError();
                 }

@@ -5,6 +5,6 @@
     <string name="stripe_invalidate_card_detail">The card details that you entered are invalid</string>
     <string name="stripe_pay">PAY</string>
     <string name="stripe_error_connection">No connection</string>
-    <string name="stripe_error_payment">Unable to process payment, please try again</string>
+    <string name="stripe_error_payment">Payment error, please try again</string>
     <string name="stripe_error_timeout">Payment timed out, please try again</string>
 </resources>
