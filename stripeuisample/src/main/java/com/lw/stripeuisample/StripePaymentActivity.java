@@ -39,7 +39,7 @@ public class StripePaymentActivity extends StripeBaseActivity {
                 "Your Shop Name Limited",
                 "$100 Movie Ticket",
                 "Extremely long message to test message clipping and text everything to go wrong should go wrong!",
-                true,
+                false,
                 new StripePaymentDialog.OnStripePaymentDismissListener() {
                     @Override
                     public void onSuccess(Dialog dialog, String id) {
