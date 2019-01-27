@@ -1,7 +1,10 @@
 <resources>
-    <string name="__stripe_invalidate_card_number">The card number that you entered is invalid</string>
-    <string name="__stripe_invalidate_expirydate">The expiration date that you entered is invalid</string>
-    <string name="__stripe_invalidate_cvc">The CVC code that you entered is invalid</string>
-    <string name="__stripe_invalidate_card_detail">The card details that you entered are invalid</string>
-    <string name="__stripe_pay">PAY</string>
+    <string name="stripe_invalidate_card_number">Invalid card number</string>
+    <string name="stripe_invalidate_expirydate">Invalid expiration date</string>
+    <string name="stripe_invalidate_cvc">Invalid CVC code</string>
+    <string name="stripe_invalidate_card_detail">The card details that you entered are invalid</string>
+    <string name="stripe_pay">PAY</string>
+    <string name="stripe_error_connection">No connection</string>
+    <string name="stripe_error_payment">Unable to process payment, please try again</string>
+    <string name="stripe_error_timeout">Payment timed out, please try again</string>
 </resources>
