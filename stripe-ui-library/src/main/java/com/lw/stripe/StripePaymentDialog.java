@@ -3,8 +3,11 @@ package com.lw.stripe;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -20,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.lw.stripe.utils.CircleImageView;
@@ -36,6 +40,8 @@ import com.stripe.android.view.ExpiryDateEditText;
 import java.lang.reflect.Field;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -81,6 +87,8 @@ public class StripePaymentDialog extends DialogFragment {
     private CircleImageView mShopImageView;
     private Button mStripeDialogPayButton;
     private ImageView mExitButton;
+    private ProgressBar mProgressBarLoading;
+    private AppCompatImageView mImagePaymentSuccess;
     // VARIABLE
     private String mDefaultPublishKey = "";
     private String mShopName = "";
@@ -98,14 +106,42 @@ public class StripePaymentDialog extends DialogFragment {
         @Override
         public void onClick(View v) {
             Log.d("Button", "Clicked");
-            if (validateCard()) {
-                hideKeyboard();
-                if (mUseSource) {
-                    createStripeSource();
-                } else {
-                    createStripeToken();
+
+            mStripeDialogPayButton.setText("");
+            mProgressBarLoading.setVisibility(View.VISIBLE);
+
+            final Handler handler = new Handler();
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    mProgressBarLoading.setVisibility(View.GONE);
+                    mImagePaymentSuccess.setVisibility(View.VISIBLE);
+                    Drawable d = mImagePaymentSuccess.getDrawable();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        if (d instanceof Animatable) {
+                            ((Animatable) d).start();
+                        }
+                    }
                 }
-            }
+            };
+            handler.postDelayed(r, 1000);
+
+            Runnable r2 = new Runnable() {
+                @Override
+                public void run() {
+                    onDismissListener.onSuccess(getDialog(), "");
+                }
+            };
+            handler.postDelayed(r2, 3000);
+
+//            if (validateCard()) {
+//                hideKeyboard();
+//                if (mUseSource) {
+//                    createStripeSource();
+//                } else {
+//                    createStripeToken();
+//                }
+//            }
         }
     };
 
@@ -162,6 +198,7 @@ public class StripePaymentDialog extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         if (getArguments() != null) {
             mDefaultPublishKey = getArguments().getString(EXTRA_DEFAULT_PUBLISH_KEY);
             mEmail = getArguments().getString(EXTRA_USER_EMAIL);
@@ -195,6 +232,8 @@ public class StripePaymentDialog extends DialogFragment {
         mCVC = v.findViewById(R.id.stripe_dialog_cvc);
         mStripeDialogPayButton = v.findViewById(R.id.stripe_dialog_paybutton);
         mStripeDialogCardIcon = v.findViewById(R.id.stripe_dialog_card_icon);
+        mProgressBarLoading = v.findViewById(R.id.progress_bar_loading);
+        mImagePaymentSuccess = v.findViewById(R.id.image_payment_success);
         return v;
     }
 
