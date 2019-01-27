@@ -34,6 +34,7 @@ public class StripePaymentActivity extends StripeBaseActivity {
                 getSupportFragmentManager(),
                 mDefaultPublishKey,
                 "test@test.com",
+                0,
                 "https://stripe.com/img/about/logos/logos/black.png",
                 "Your Shop Name Limited",
                 "$100 Movie Ticket",
