@@ -33,11 +33,11 @@ public class StripePaymentActivity extends StripeBaseActivity {
         StripePaymentDialog.show(
                 getSupportFragmentManager(),
                 mDefaultPublishKey,
-                "",
                 0,
                 "https://lh3.googleusercontent.com/0eQ8bbqboO6IwpHNTs9O9eYB1XYH8qe9Fz1DnJmOPytrsFE_Yl-BmLr71a5TfXsY6Y2j=s512",
                 "Product Title",
                 "by Company Name",
+                "",
                 "Purchase",
                 false,
                 new StripePaymentDialog.OnStripePaymentDismissListener() {
@@ -45,6 +45,7 @@ public class StripePaymentActivity extends StripeBaseActivity {
                     public void onSuccess(Dialog dialog, String id) {
                         Log.d("Stripe Success", "Object ID : " + id);
                     }
+
                     @Override
                     public void onDismiss() {
                         Log.d("Stripe Dismiss", "Dismissed");

@@ -63,11 +63,11 @@ public class StripePaymentDialog extends DialogFragment {
 
     private static final String TAG = "StripePaymentDialog";
     private static final String EXTRA_DEFAULT_PUBLISH_KEY = "EXTRA_DEFAULT_PUBLISH_KEY";
-    private static final String EXTRA_USER_EMAIL = "EXTRA_USER_EMAIL";
+    private static final String EXTRA_CAPTION = "EXTRA_CAPTION";
     private static final String EXTRA_SHOP_IMG = "EXTRA_SHOP_IMG";
     private static final String EXTRA_SHOP_IMG_URL = "EXTRA_SHOP_IMG_URL";
-    private static final String EXTRA_SHOP_NAME = "EXTRA_SHOP_NAME";
-    private static final String EXTRA_DESCRIPTION = "EXTRA_DESCRIPTION";
+    private static final String EXTRA_TITLE = "EXTRA_TITLE";
+    private static final String EXTRA_SUBTITLE = "EXTRA_SUBTITLE";
     private static final String EXTRA_PAY_BUTTON_TEXT = "EXTRA_PAY_BUTTON_TEXT";
     private static final String EXTRA_USE_SOURCE = "EXTRA_USE_SOURCE";
     // Object
@@ -162,22 +162,22 @@ public class StripePaymentDialog extends DialogFragment {
      *
      * @param fm                - FragmentManager {{@link FragmentManager}}
      * @param publishKey        - Stripe Publish Key (not Secret Key , Secret Key store at server side )
-     * @param email             - User Email
      * @param shopImg           - Stripe Shop Image Drawable ID
-     * @param shopImgUrl        - Stripe Shop Image
-     * @param shopName          - Stripe Shop Name
-     * @param description       - Description of your payment (e.g $100 Movie Coupon)
+     * @param shopImgUrl   - Set Header Image from URL
+     * @param title        - Product name
+     * @param subtitle          - Company name or seller
+     * @param caption             - Caption badge
      * @param payButtonText     - Text to show on Pay Button
      * @param useSource         - Return Stripe source or token.
      * @param OnDismissListener - Callback Listener
      */
     public static void show(FragmentManager fm,
                             String publishKey,
-                            String email,
                             Integer shopImg,
                             String shopImgUrl,
-                            String shopName,
-                            String description,
+                            String title,
+                            String subtitle,
+                            String caption,
                             String payButtonText,
                             boolean useSource,
                             OnStripePaymentDismissListener OnDismissListener) {
@@ -192,11 +192,11 @@ public class StripePaymentDialog extends DialogFragment {
         instance.setDismissListener(OnDismissListener);
         Bundle args = new Bundle();
         args.putString(EXTRA_DEFAULT_PUBLISH_KEY, publishKey);
-        args.putString(EXTRA_USER_EMAIL, email);
-        args.putString(EXTRA_SHOP_NAME, shopName);
         args.putInt(EXTRA_SHOP_IMG, shopImg);
         args.putString(EXTRA_SHOP_IMG_URL, shopImgUrl);
-        args.putString(EXTRA_DESCRIPTION, description);
+        args.putString(EXTRA_TITLE, title);
+        args.putString(EXTRA_SUBTITLE, subtitle);
+        args.putString(EXTRA_CAPTION, caption);
         args.putString(EXTRA_PAY_BUTTON_TEXT, payButtonText);
         args.putBoolean(EXTRA_USE_SOURCE, useSource);
         instance.setArguments(args);
@@ -213,11 +213,11 @@ public class StripePaymentDialog extends DialogFragment {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         if (getArguments() != null) {
             mDefaultPublishKey = getArguments().getString(EXTRA_DEFAULT_PUBLISH_KEY);
-            mEmail = getArguments().getString(EXTRA_USER_EMAIL);
-            mShopName = getArguments().getString(EXTRA_SHOP_NAME);
+            mEmail = getArguments().getString(EXTRA_CAPTION);
+            mShopName = getArguments().getString(EXTRA_TITLE);
             mShopImage = getArguments().getInt(EXTRA_SHOP_IMG, 0);
             mShopImageUrl = getArguments().getString(EXTRA_SHOP_IMG_URL);
-            mDescription = getArguments().getString(EXTRA_DESCRIPTION);
+            mDescription = getArguments().getString(EXTRA_SUBTITLE);
             mPayButtonText = getArguments().getString(EXTRA_PAY_BUTTON_TEXT);
             mUseSource = getArguments().getBoolean(EXTRA_USE_SOURCE);
         }
