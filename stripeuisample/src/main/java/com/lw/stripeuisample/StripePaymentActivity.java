@@ -35,10 +35,10 @@ public class StripePaymentActivity extends StripeBaseActivity {
                 mDefaultPublishKey,
                 "",
                 0,
-                "https://lh3.googleusercontent.com/R-vJInTblK1KBOqZaSDm_ac270QBHsiIcU9agHnN-rrp9K_lkN8rLzGIH8asCfkb420Q=s512-rw",
-                "Your Shop Name Limited",
-                "$100 Movie Ticket",
-                "Extremely long message to test message clipping and text everything to go wrong should go wrong!",
+                "https://lh3.googleusercontent.com/0eQ8bbqboO6IwpHNTs9O9eYB1XYH8qe9Fz1DnJmOPytrsFE_Yl-BmLr71a5TfXsY6Y2j=s512",
+                "Product Title",
+                "by Company Name",
+                "Purchase",
                 false,
                 new StripePaymentDialog.OnStripePaymentDismissListener() {
                     @Override
