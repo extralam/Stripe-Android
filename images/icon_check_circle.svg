@@ -6,7 +6,7 @@
 	.st0{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 </style>
 <g>
-	<path class="st0" d="M28.7,14.8V16c0,7.4-6,13.3-13.3,13.3C8,29.3,2,23.4,2,16C2,8.6,8,2.7,15.3,2.7c1.9,0,3.7,0.4,5.4,1.2"/>
-	<polyline class="st0" points="30,4 15.3,18.7 11.3,14.7 	"/>
+	<path class="st0" d="M28.7,14.8V16c0,7.4-6,13.3-13.3,13.3C8,29.3,2,23.4,2,16S8,2.7,15.3,2.7c1.9,0,3.7,0.4,5.4,1.2"/>
 </g>
+<polyline class="st0" points="11.3,14.7 15.3,18.7 30,4 "/>
 </svg>
