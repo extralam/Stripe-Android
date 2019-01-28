@@ -22,6 +22,7 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -38,8 +39,9 @@ public class CircleImageView extends DownloadImageView {
     private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
     private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
 
-    private int borderWidth = 0;
+    private int borderWidth = 20;
     private int canvasSize;
+    private Path clipPath;
     private Paint paint;
     private Paint paintBorder;
     private boolean isBackground = false;
@@ -51,13 +53,15 @@ public class CircleImageView extends DownloadImageView {
     public CircleImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        clipPath = new Path();
+
         paint = new Paint();
         paint.setAntiAlias(true);
 
         paintBorder = new Paint();
         paintBorder.setStyle(Paint.Style.FILL_AND_STROKE);
         paintBorder.setAntiAlias(true);
-        paintBorder.setColor(getResources().getColor(android.R.color.transparent));
+        paintBorder.setColor(getResources().getColor(android.R.color.black));
     }
 
     public CircleImageView(Context context, AttributeSet attrs, int defStyle) {
@@ -82,29 +86,14 @@ public class CircleImageView extends DownloadImageView {
         if (drawable == null) return;
         if (getWidth() == 0 || getHeight() == 0) return;
 
-        if (drawable instanceof BitmapDrawable) {
-            Bitmap srcBmp = ((BitmapDrawable) drawable).getBitmap();
-            if (srcBmp == null) return;
-
-            Bitmap image = getSquareBitmap(srcBmp);
-
+        canvasSize = getWidth();
+        if (getWidth() < canvasSize)
             canvasSize = getWidth();
-            if (getWidth() < canvasSize)
-                canvasSize = getWidth();
+        float circleCenter = canvasSize / 2f;
 
-            BitmapShader shader = new BitmapShader(
-                    Bitmap.createScaledBitmap(image, canvasSize, canvasSize, false),
-                    Shader.TileMode.CLAMP,
-                    Shader.TileMode.CLAMP);
-            paint.setShader(shader);
+        clipPath.addCircle(circleCenter, circleCenter, circleCenter - borderWidth / 2f, Path.Direction.CW);
+        canvas.clipPath(clipPath);
 
-            float circleCenter = canvasSize / 2f;
-            // circleCenter is the x or y of the view's center
-            // radius is the radius in pixels of the cirle to be drawn
-            // paint contains the shader that will texture the shape
-            canvas.drawCircle(circleCenter, circleCenter, circleCenter, paintBorder);
-            canvas.drawCircle(circleCenter, circleCenter, circleCenter - borderWidth / 2f, paint);
-        }
         super.onDraw(canvas);
     }
 
