@@ -119,7 +119,7 @@ public class StripePaymentDialog extends DialogFragment {
             mPaymentTimeout = false;
 
             if (!validateCard()) {
-               return;
+                return;
             }
 
             if (!isConnected()) {
@@ -160,15 +160,15 @@ public class StripePaymentDialog extends DialogFragment {
     /**
      * Open the Stripe Payment Dialog
      *
-     * @param fm                 - FragmentManager {{@link FragmentManager}}
+     * @param fm                - FragmentManager {{@link FragmentManager}}
      * @param publishKey        - Stripe Publish Key (not Secret Key , Secret Key store at server side )
      * @param email             - User Email
-     * @param shopImg - Stripe Shop Image Drawable ID
-     * @param shopImgUrl          - Stripe Shop Image
-     * @param shopName         - Stripe Shop Name
+     * @param shopImg           - Stripe Shop Image Drawable ID
+     * @param shopImgUrl        - Stripe Shop Image
+     * @param shopName          - Stripe Shop Name
      * @param description       - Description of your payment (e.g $100 Movie Coupon)
-     * @param payButtonText          - Text to show on Pay Button
-     * @param useSource - Return Stripe source or token.
+     * @param payButtonText     - Text to show on Pay Button
+     * @param useSource         - Return Stripe source or token.
      * @param OnDismissListener - Callback Listener
      */
     public static void show(FragmentManager fm,
@@ -215,7 +215,7 @@ public class StripePaymentDialog extends DialogFragment {
             mDefaultPublishKey = getArguments().getString(EXTRA_DEFAULT_PUBLISH_KEY);
             mEmail = getArguments().getString(EXTRA_USER_EMAIL);
             mShopName = getArguments().getString(EXTRA_SHOP_NAME);
-            mShopImage = getArguments().getInt(EXTRA_SHOP_IMG , 0);
+            mShopImage = getArguments().getInt(EXTRA_SHOP_IMG, 0);
             mShopImageUrl = getArguments().getString(EXTRA_SHOP_IMG_URL);
             mDescription = getArguments().getString(EXTRA_DESCRIPTION);
             mPayButtonText = getArguments().getString(EXTRA_PAY_BUTTON_TEXT);
@@ -265,7 +265,7 @@ public class StripePaymentDialog extends DialogFragment {
         mStripe = new Stripe(getContext(), mDefaultPublishKey);
 
         if (mShopImage != 0) {
-            mShopImageView.setImageDrawable(getResources().getDrawable(mShopImage));
+            mShopImageView.setImageDrawable(ContextCompat.getDrawable(getContext(), mShopImage));
         }
         if (!mShopImageUrl.isEmpty()) {
             mShopImageView.setUrl(mShopImageUrl);
@@ -513,7 +513,6 @@ public class StripePaymentDialog extends DialogFragment {
     }
 
 
-
     private void createStripeToken() {
         mStripe.createToken(mCard, mDefaultPublishKey, new TokenCallback() {
             @Override
@@ -521,6 +520,7 @@ public class StripePaymentDialog extends DialogFragment {
                 Log.d("Stripe Token Success: ", token.toString());
                 setSubmitSuccess(token.getId());
             }
+
             @Override
             public void onError(Exception error) {
                 if (error != null && error.getMessage().length() > 0) {
@@ -540,6 +540,7 @@ public class StripePaymentDialog extends DialogFragment {
                 Log.d("Stripe Token Success: ", source.toString());
                 setSubmitSuccess(source.getId());
             }
+
             @Override
             public void onError(Exception error) {
                 if (error != null && error.getMessage().length() > 0) {
@@ -650,7 +651,7 @@ public class StripePaymentDialog extends DialogFragment {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Network[] networks = connectivityManager.getAllNetworks();
                 NetworkInfo networkInfo;
-                for (Network network: networks) {
+                for (Network network : networks) {
                     networkInfo = connectivityManager.getNetworkInfo(network);
                     if (networkInfo.getState() == NetworkInfo.State.CONNECTED) {
                         return true;
@@ -659,7 +660,7 @@ public class StripePaymentDialog extends DialogFragment {
             } else {
                 NetworkInfo[] networkInfos = connectivityManager.getAllNetworkInfo();
                 if (networkInfos != null) {
-                    for (NetworkInfo networkInfo: networkInfos) {
+                    for (NetworkInfo networkInfo : networkInfos) {
                         if (networkInfo.getState() == NetworkInfo.State.CONNECTED)
                             return true;
                     }
@@ -679,6 +680,7 @@ public class StripePaymentDialog extends DialogFragment {
          * @param token  {{ @Link com.stripe.android.model.Token}}
          */
         void onSuccess(Dialog dialog, String token);
+
         void onDismiss();
     }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:orientation="vertical">
 
     <FrameLayout
@@ -46,16 +46,16 @@
                     android:id="@+id/stripe_dialog_txt1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:layout_marginLeft="12dp"
+                    android:layout_marginTop="4dp"
                     android:layout_marginRight="12dp"
                     android:padding="2dp"
                     android:text=""
                     android:textColor="@android:color/black"
                     android:textSize="14dp"
                     android:textStyle="bold"
-                    tools:text="Product Title"
-                    tools:ignore="SpUsage"/>
+                    tools:ignore="SpUsage"
+                    tools:text="Product Title"/>
 
                 <TextView
                     android:id="@+id/stripe_dialog_txt2"
@@ -68,8 +68,8 @@
                     android:text=""
                     android:textColor="@android:color/darker_gray"
                     android:textSize="12dp"
-                    tools:text="by Seller Subtitle"
-                    tools:ignore="SpUsage"/>
+                    tools:ignore="SpUsage"
+                    tools:text="by Seller Subtitle"/>
 
                 <LinearLayout
                     android:id="@+id/stripe_dialog_email_container"
@@ -273,50 +273,50 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:ellipsize="end"
                     android:gravity="center_horizontal"
+                    android:maxLines="3"
                     android:padding="2dp"
                     android:text=""
                     android:textColor="@android:color/holo_red_light"
                     android:textSize="12dp"
-                    android:maxLines="3"
-                    android:ellipsize="end"
                     android:visibility="gone"
+                    tools:ignore="SpUsage"
                     tools:text="Uh oh, something went wrong!"
-                    tools:visibility="visible"
-                    tools:ignore="SpUsage"/>
+                    tools:visibility="visible"/>
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
                     android:paddingLeft="8dp"
                     android:paddingTop="8dp"
                     android:paddingRight="8dp"
-                    android:paddingBottom="12dp"
-                    android:clipChildren="false"
-                    android:clipToPadding="false">
+                    android:paddingBottom="12dp">
 
                     <Button
                         android:id="@+id/stripe_dialog_paybutton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/stripe_btn_background_selector"
+                        android:elevation="2dp"
                         android:ellipsize="middle"
                         android:focusable="true"
                         android:padding="8dp"
                         android:singleLine="true"
                         android:textColor="@android:color/white"
                         android:textStyle="bold"
-                        android:elevation="2dp"
-                        tools:text="Payment Button"
-                        tools:ignore="UnusedAttribute"/>
+                        tools:ignore="UnusedAttribute"
+                        tools:text="Payment Button"/>
 
                     <ProgressBar
                         android:id="@+id/progress_bar_loading"
-                        android:theme="@style/StripeProgressBarLoading"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
                         android:elevation="2dp"
+                        android:theme="@style/StripeProgressBarLoading"
                         android:visibility="gone"
                         tools:ignore="UnusedAttribute"/>
 
@@ -324,12 +324,12 @@
                         android:id="@+id/image_payment_success"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:padding="2dp"
                         android:layout_gravity="center"
-                        app:srcCompat="@drawable/animated_check_circle"
                         android:elevation="2dp"
-                        tools:ignore="UnusedAttribute"
-                        android:visibility="gone"/>
+                        android:padding="2dp"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/animated_check_circle"
+                        tools:ignore="UnusedAttribute"/>
                 </FrameLayout>
             </LinearLayout>
         </LinearLayout>

@@ -105,6 +105,7 @@ public class CircleImageView extends DownloadImageView {
             canvas.drawCircle(circleCenter, circleCenter, circleCenter, paintBorder);
             canvas.drawCircle(circleCenter, circleCenter, circleCenter - borderWidth / 2f, paint);
         }
+        super.onDraw(canvas);
     }
 
     public void showBackground(boolean isBackground) {

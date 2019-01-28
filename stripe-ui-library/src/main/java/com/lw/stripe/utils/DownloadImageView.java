@@ -12,10 +12,12 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 
+import androidx.appcompat.widget.AppCompatImageView;
+
 /**
  * Created by alan on 31/7/16.
  */
-public class DownloadImageView extends ImageView {
+public class DownloadImageView extends AppCompatImageView {
 
     private DownloadImageTask task;
     private BitmapCacheManager mBitmapCacheManager;
