@@ -46,6 +46,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -246,6 +247,11 @@ public class StripePaymentDialog extends DialogFragment {
         mStripeDialogCardIcon = v.findViewById(R.id.stripe_dialog_card_icon);
         mProgressBarLoading = v.findViewById(R.id.progress_bar_loading);
         mImagePaymentSuccess = v.findViewById(R.id.image_payment_success);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            Drawable wrapDrawable = DrawableCompat.wrap(mProgressBarLoading.getIndeterminateDrawable());
+            DrawableCompat.setTint(wrapDrawable, ContextCompat.getColor(getContext(), android.R.color.white));
+            mProgressBarLoading.setIndeterminateDrawable(DrawableCompat.unwrap(wrapDrawable));
+        }
         return v;
     }
 
