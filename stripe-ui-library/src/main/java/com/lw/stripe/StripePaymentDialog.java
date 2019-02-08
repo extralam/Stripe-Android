@@ -157,6 +157,43 @@ public class StripePaymentDialog extends DialogFragment {
         }
     };
 
+    /*
+     * Stripe token creation callbacks.
+     * Instantiate callback as variable to prevent it from being garbage collected.
+     */
+    private TokenCallback mTokenCallback = new TokenCallback() {
+        @Override
+        public void onSuccess(Token token) {
+            Log.d("Stripe Token Success: ", token.toString());
+            setSubmitSuccess(token.getId());
+        }
+
+        @Override
+        public void onError(@NonNull Exception error) {
+            if (error.getMessage().length() > 0) {
+                Log.d("Stripe Token Error: ", error.getLocalizedMessage());
+                setErrorMessage(error.getLocalizedMessage());
+                setSubmitError();
+            }
+        }
+    };
+    private SourceCallback mSourceCallback = new SourceCallback() {
+        @Override
+        public void onSuccess(Source source) {
+            Log.d("Stripe Token Success: ", source.toString());
+            setSubmitSuccess(source.getId());
+        }
+
+        @Override
+        public void onError(@NonNull Exception error) {
+            if (error.getMessage().length() > 0) {
+                Log.d("Stripe Token Error: ", error.getLocalizedMessage());
+                setErrorMessage(error.getLocalizedMessage());
+                setSubmitError();
+            }
+        }
+    };
+
     /**
      * Open the Stripe Payment Dialog
      *
@@ -514,42 +551,12 @@ public class StripePaymentDialog extends DialogFragment {
 
 
     private void createStripeToken() {
-        mStripe.createToken(mCard, mDefaultPublishKey, new TokenCallback() {
-            @Override
-            public void onSuccess(Token token) {
-                Log.d("Stripe Token Success: ", token.toString());
-                setSubmitSuccess(token.getId());
-            }
-
-            @Override
-            public void onError(Exception error) {
-                if (error != null && error.getMessage().length() > 0) {
-                    Log.d("Stripe Token Error: ", error.getLocalizedMessage());
-                    setErrorMessage(error.getLocalizedMessage());
-                    setSubmitError();
-                }
-            }
-        });
+        mStripe.createToken(mCard, mDefaultPublishKey, mTokenCallback);
     }
 
     private void createStripeSource() {
         SourceParams cardSourceParams = SourceParams.createCardParams(mCard);
-        mStripe.createSource(cardSourceParams, new SourceCallback() {
-            @Override
-            public void onSuccess(Source source) {
-                Log.d("Stripe Token Success: ", source.toString());
-                setSubmitSuccess(source.getId());
-            }
-
-            @Override
-            public void onError(Exception error) {
-                if (error != null && error.getMessage().length() > 0) {
-                    Log.d("Stripe Token Error: ", error.getLocalizedMessage());
-                    setErrorMessage(error.getLocalizedMessage());
-                    setSubmitError();
-                }
-            }
-        });
+        mStripe.createSource(cardSourceParams, mSourceCallback);
     }
 
     private void setSubmitSuccess(final String id) {
