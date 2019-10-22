@@ -3,6 +3,7 @@ package com.lw.stripe;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -29,6 +30,14 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+
 import com.lw.stripe.utils.CircleImageView;
 import com.stripe.android.SourceCallback;
 import com.stripe.android.Stripe;
@@ -39,17 +48,6 @@ import com.stripe.android.model.SourceParams;
 import com.stripe.android.model.Token;
 import com.stripe.android.view.CardNumberEditText;
 import com.stripe.android.view.ExpiryDateEditText;
-
-import java.lang.reflect.Field;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import static com.stripe.android.model.Card.CVC_LENGTH_AMERICAN_EXPRESS;
 import static com.stripe.android.model.Card.CVC_LENGTH_COMMON;
@@ -142,14 +140,22 @@ public class StripePaymentDialog extends DialogFragment {
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    if (getDialog().isShowing()) {
-                        if (!mPaymentComplete) {
-                            mPaymentTimeout = true;
-                            mProgressBarLoading.setVisibility(View.GONE);
-                            mStripeDialogPayButton.setText(mPayButtonText);
-                            mStripeDialogPayButton.setEnabled(true);
-                            setErrorMessage(getString(R.string.stripe_error_timeout));
+                    if (getDialog() != null) {
+                        if (getDialog().isShowing()) {
+                            if (!mPaymentComplete) {
+                                mPaymentTimeout = true;
+                                mProgressBarLoading.setVisibility(View.GONE);
+                                mStripeDialogPayButton.setText(mPayButtonText);
+                                mStripeDialogPayButton.setEnabled(true);
+                                setErrorMessage(getString(R.string.stripe_error_timeout));
+                            }
                         }
+                    } else {
+                        mPaymentTimeout = true;
+                        mProgressBarLoading.setVisibility(View.GONE);
+                        mStripeDialogPayButton.setText(mPayButtonText);
+                        mStripeDialogPayButton.setEnabled(true);
+                        setErrorMessage(getString(R.string.stripe_error_timeout));
                     }
                 }
             };
@@ -238,6 +244,13 @@ public class StripePaymentDialog extends DialogFragment {
         args.putBoolean(EXTRA_USE_SOURCE, useSource);
         instance.setArguments(args);
         instance.show(fm, TAG);
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        mHandler.removeCallbacksAndMessages(null);
+
+        super.onDismiss(dialog);
     }
 
     public void setDismissListener(OnStripePaymentDismissListener dissmissListener) {
@@ -549,7 +562,6 @@ public class StripePaymentDialog extends DialogFragment {
         }
     }
 
-
     private void createStripeToken() {
         mStripe.createToken(mCard, mDefaultPublishKey, mTokenCallback);
     }
@@ -576,8 +588,15 @@ public class StripePaymentDialog extends DialogFragment {
                 Runnable r = new Runnable() {
                     @Override
                     public void run() {
-                        if (getDialog().isShowing()) {
-                            dismiss();
+                        if (getDialog() != null) {
+                            if (getDialog().isShowing()) {
+                                dismiss();
+                                if (onDismissListener != null) {
+                                    onDismissListener.onSuccess(getDialog(), id);
+                                }
+                            }
+                        } else {
+                            //Dialog was dismissed. Send callback.
                             if (onDismissListener != null) {
                                 onDismissListener.onSuccess(getDialog(), id);
                             }
@@ -600,22 +619,6 @@ public class StripePaymentDialog extends DialogFragment {
     private void setErrorMessage(String errorMessage) {
         mErrorMessage.setText(errorMessage);
         mErrorMessage.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mHandler.removeCallbacksAndMessages(null);
-        try {
-            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
-            childFragmentManager.setAccessible(true);
-            childFragmentManager.set(this, null);
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
     private void setupDialog() {
