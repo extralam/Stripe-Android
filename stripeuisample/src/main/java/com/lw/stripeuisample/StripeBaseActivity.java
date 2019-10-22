@@ -2,17 +2,19 @@ package com.lw.stripeuisample;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
- *
  * Created by alan Lam on 31/7/16.
  */
 public abstract class StripeBaseActivity extends AppCompatActivity {
 
     public abstract int getLayout();
+
     public abstract void initView(Bundle savedInstanceState);
+
     public abstract void init(Bundle savedInstanceState);
 
     @Override
@@ -36,5 +38,4 @@ public abstract class StripeBaseActivity extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
     }
-
 }

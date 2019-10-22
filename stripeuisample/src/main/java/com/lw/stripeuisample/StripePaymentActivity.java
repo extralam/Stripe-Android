@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 
 import com.lw.stripe.StripePaymentDialog;
-import com.stripe.android.model.Token;
 
 public class StripePaymentActivity extends StripeBaseActivity {
 
@@ -20,7 +19,7 @@ public class StripePaymentActivity extends StripeBaseActivity {
 
     }
 
-    public void onClick(View v){
+    public void onClick(View v) {
         stripeTest();
     }
 
@@ -29,23 +28,28 @@ public class StripePaymentActivity extends StripeBaseActivity {
         stripeTest();
     }
 
-    private void stripeTest(){
+    private void stripeTest() {
         String mDefaultPublishKey = "pk_test_your_code";
         StripePaymentDialog.show(
                 getSupportFragmentManager(),
                 mDefaultPublishKey,
-                "test@test.com",
-                "https://stripe.com/img/about/logos/logos/black.png",
-                "Your Shop Name Limited",
-                "$100 Movie Ticket",
-                "hkd",
-                1000,
+                0,
+                "https://lh3.googleusercontent.com/0eQ8bbqboO6IwpHNTs9O9eYB1XYH8qe9Fz1DnJmOPytrsFE_Yl-BmLr71a5TfXsY6Y2j=s512",
+                "Product Title",
+                "by Company Name",
+                "",
+                "Purchase",
+                false,
                 new StripePaymentDialog.OnStripePaymentDismissListener() {
                     @Override
-                    public void onSuccess(Dialog mmDialog, Token mmToken) {
-                        Log.d("atest","id : " + mmToken.getId());
+                    public void onSuccess(Dialog dialog, String id) {
+                        Log.d("Stripe Success", "Object ID : " + id);
+                    }
+
+                    @Override
+                    public void onDismiss() {
+                        Log.d("Stripe Dismiss", "Dismissed");
                     }
                 });
     }
-
 }
