@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:minWidth="480dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="42dp"
+            android:background="@drawable/stripe_dialog_background"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:background="@drawable/stripe_dialog_background_top"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp">
+
+                <ImageView
+                    android:id="@+id/stripe_dialog_exit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_exit"
+                    tools:ignore="RtlHardcoded"/>
+
+                <TextView
+                    android:id="@+id/stripe_dialog_txt1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="12dp"
+                    android:padding="2dp"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    tools:ignore="SpUsage"
+                    tools:text="Product Title"/>
+
+                <TextView
+                    android:id="@+id/stripe_dialog_txt2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginBottom="6dp"
+                    android:padding="2dp"
+                    android:text=""
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="12dp"
+                    tools:ignore="SpUsage"
+                    tools:text="by Seller Subtitle"/>
+
+                <LinearLayout
+                    android:id="@+id/stripe_dialog_email_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="1dp"
+                        android:background="#CCCCCC"/>
+
+                    <TextView
+                        android:id="@+id/stripe_dialog_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="12dp"
+                        tools:ignore="SpUsage"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="#CCCCCC"/>
+
+            <LinearLayout
+                android:id="@+id/stripe_dialog_input_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                android:paddingLeft="12dp"
+                android:paddingTop="12dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/stripe_inputbox_background"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/stripe_dialog_card_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic_stripe_card"/>
+
+                        <com.stripe.android.view.CardNumberEditText
+                            android:id="@+id/stripe_dialog_card"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:accessibilityTraversalBefore="@+id/stripe_dialog_date"
+                            android:background="@android:color/transparent"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:hint="Card number"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:maxLength="19"
+                            android:nextFocusRight="@+id/stripe_dialog_date"
+                            android:nextFocusDown="@+id/stripe_dialog_date"
+                            android:nextFocusForward="@+id/stripe_dialog_date"
+                            android:padding="2dp"
+                            android:saveEnabled="true"
+                            android:textColor="@android:color/black"
+                            android:textColorHint="@android:color/darker_gray"
+                            android:textIsSelectable="false"
+                            android:textSize="14dp"
+                            tools:ignore="HardcodedText,SpUsage,UnusedAttribute"/>
+
+                        <ImageView
+                            android:id="@+id/stripe_dialog_card_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginRight="4dp"
+                            android:adjustViewBounds="true"
+                            android:visibility="gone"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#CCCCCC"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/stripe_dialog_date_container"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:src="@drawable/ic_stripe_date"/>
+
+                            <com.stripe.android.view.ExpiryDateEditText
+                                android:id="@+id/stripe_dialog_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:accessibilityTraversalAfter="@+id/stripe_dialog_date"
+                                android:accessibilityTraversalBefore="@id/stripe_dialog_card"
+                                android:background="@android:color/transparent"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:hint="MM / YY"
+                                android:imeOptions="actionNext"
+                                android:inputType="number"
+                                android:maxLength="5"
+                                android:nextFocusLeft="@id/stripe_dialog_cvc_container"
+                                android:nextFocusRight="@+id/et_cvc_number"
+                                android:nextFocusUp="@id/stripe_dialog_cvc_container"
+                                android:nextFocusDown="@+id/et_cvc_number"
+                                android:nextFocusForward="@+id/et_cvc_number"
+                                android:padding="2dp"
+                                android:textColor="@android:color/black"
+                                android:textColorHint="@android:color/darker_gray"
+                                android:textSize="14dp"
+                                tools:ignore="HardcodedText,SpUsage,UnusedAttribute"
+                                tools:importantForAccessibility="yes"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="#CCCCCC"/>
+
+                        <LinearLayout
+                            android:id="@+id/stripe_dialog_cvc_container"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:src="@drawable/ic_stripe_cvc"/>
+
+                            <EditText
+                                android:id="@+id/stripe_dialog_cvc"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:accessibilityTraversalAfter="@+id/stripe_dialog_date"
+                                android:background="@android:color/transparent"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:hint="CVC"
+                                android:imeOptions="actionDone"
+                                android:inputType="number"
+                                android:maxLength="4"
+                                android:nextFocusLeft="@id/stripe_dialog_date"
+                                android:nextFocusUp="@id/stripe_dialog_date"
+                                android:padding="2dp"
+                                android:textColor="@android:color/black"
+                                android:textColorHint="@android:color/darker_gray"
+                                android:textSize="14dp"
+                                tools:ignore="HardcodedText,SpUsage,UnusedAttribute"
+                                tools:importantForAccessibility="yes"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/stripe_dialog_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="3"
+                    android:padding="2dp"
+                    android:text=""
+                    android:textColor="@android:color/holo_red_light"
+                    android:textSize="12dp"
+                    android:visibility="gone"
+                    tools:ignore="SpUsage"
+                    tools:text="Uh oh, something went wrong!"
+                    tools:visibility="visible"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="12dp">
+
+                    <Button
+                        android:id="@+id/stripe_dialog_paybutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/stripe_btn_background_selector"
+                        android:elevation="2dp"
+                        android:ellipsize="middle"
+                        android:focusable="true"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        tools:ignore="UnusedAttribute"
+                        tools:text="Payment Button"/>
+
+                    <ProgressBar
+                        android:id="@+id/progress_bar_loading"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center"
+                        android:elevation="2dp"
+                        android:theme="@style/StripeProgressBarLoading"
+                        android:visibility="gone"
+                        tools:ignore="UnusedAttribute"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/image_payment_success"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center"
+                        android:elevation="2dp"
+                        android:padding="2dp"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/animated_check_circle"
+                        tools:ignore="UnusedAttribute"/>
+                </FrameLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <com.lw.stripe.utils.CircleImageView
+                android:id="@+id/stripe__logo"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_centerInParent="true"
+                android:layout_margin="6dp"
+                android:adjustViewBounds="true"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:focusable="true"
+                tools:ignore="UnusedAttribute"/>
+        </RelativeLayout>
+    </FrameLayout>
+</RelativeLayout>

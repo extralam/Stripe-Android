@@ -1,7 +1,8 @@
 package com.lw.stripe.utils;
 
 import android.graphics.Bitmap;
-import android.support.v4.util.LruCache;
+
+import androidx.collection.LruCache;
 
 /**
  * Created by alan on 6/8/16.
@@ -10,7 +11,7 @@ public class BitmapCacheManager {
 
     private LruCache<String, Bitmap> mMemoryCache;
 
-    public BitmapCacheManager(){
+    public BitmapCacheManager() {
         // Get max available VM memory, exceeding this amount will throw an
         // OutOfMemory exception. Stored in kilobytes as LruCache takes an
         // int in its constructor.
